@@ -1,0 +1,46 @@
+{
+    "name": "escolalms/topic-type-gift",
+    "description": "Escola Headles LMS Topic Type GIFT",
+    "type": "package",
+    "require": {
+        "php": "^7.4|^8.0|^8.1",
+        "escolalms/auth": "^0",
+        "escolalms/core": "^1",
+        "laravel/framework": "^8|^9",
+        "escolalms/topic-types": "^0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "orchestra/testbench": ">=5.0",
+        "darkaonline/l5-swagger": "8.1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maciej Rymarz",
+            "email": "maciej.rymarz@escolasoft.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "EscolaLms\\TopicTypeGift\\": "src",
+            "EscolaLms\\TopicTypeGift\\Tests\\": "tests",
+            "EscolaLms\\TopicTypeGift\\Database\\Factories\\": "database/factories",
+            "EscolaLms\\TopicTypeGift\\Database\\Seeders\\": "database/seeders"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EscolaLms\\TopicTypeGift\\EscolaLmsTopicTypeGiftServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": false,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
