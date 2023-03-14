@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Resources\TopicType\Export;
 
+use EscolaLms\TopicTypeGift\Http\Resources\GiftQuestionResource;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypes\Http\Resources\TopicType\Contacts\TopicTypeResourceContract;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,6 +18,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'value' => $this->value,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'questions' => GiftQuestionResource::collection($this->questions),
         ];
     }
 }
