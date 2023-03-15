@@ -7,7 +7,7 @@ use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\GiftQuestionApiAdminSwagger
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminCreateGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminDeleteGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateGiftQuestionRequest;
-use EscolaLms\TopicTypeGift\Http\Resources\GiftQuestionResource;
+use EscolaLms\TopicTypeGift\Http\Resources\AdminGiftQuestionResource;
 use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuestionServiceContract;
 use Illuminate\Http\JsonResponse;
 
@@ -24,14 +24,14 @@ class GiftQuestionApiAdminController extends EscolaLmsBaseController implements 
     {
         $result = $this->giftQuestionService->create($request->getGiftQuestionDto());
 
-        return $this->sendResponseForResource(GiftQuestionResource::make($result), __('Gift question created successfully.'));
+        return $this->sendResponseForResource(AdminGiftQuestionResource::make($result), __('Gift question created successfully.'));
     }
 
     public function update(AdminUpdateGiftQuestionRequest $request): JsonResponse
     {
         $result = $this->giftQuestionService->update($request->getGiftQuestionDto(), $request->getId());
 
-        return $this->sendResponseForResource(GiftQuestionResource::make($result), __('Gift question updated successfully.'));
+        return $this->sendResponseForResource(AdminGiftQuestionResource::make($result), __('Gift question updated successfully.'));
     }
 
     public function delete(AdminDeleteGiftQuestionRequest $request): JsonResponse

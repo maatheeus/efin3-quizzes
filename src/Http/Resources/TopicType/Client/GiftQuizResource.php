@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Http\Resources\TopicType\Client;
 
 use EscolaLms\Courses\Http\Resources\TopicType\Contracts\TopicTypeResourceContract;
+use EscolaLms\TopicTypeGift\Http\Resources\GiftQuestionResource;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +17,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
         return [
             'id' => $this->id,
             'value' => $this->value,
+            'questions' => GiftQuestionResource::collection($this->questions->sortBy('id')),
         ];
     }
 }

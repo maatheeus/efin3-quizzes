@@ -3,24 +3,8 @@
 namespace EscolaLms\TopicTypeGift\Http\Resources;
 
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
+use EscolaLms\TopicTypeGift\Strategies\GiftQuestionStrategyFactory;
 use Illuminate\Http\Resources\Json\JsonResource;
-
-/**
- * @OA\Schema(
- *      schema="GiftQuestion",
- *      @OA\Property(
- *          property="id",
- *          description="id",
- *          type="number"
- *      ),
- *      @OA\Property(
- *          property="value",
- *          description="value",
- *          type="string"
- *      ),
- * )
- *
- */
 
 /**
  * @mixin GiftQuestion
@@ -29,9 +13,14 @@ class GiftQuestionResource extends JsonResource
 {
     public function toArray($request): array
     {
+        $strategy = GiftQuestionStrategyFactory::create($this->resource);
+
         return [
             'id' => $this->id,
-            'value' => $this->value,
+            'type' => $this->type,
+            'title' => $strategy->getTitle(),
+            'question' => $strategy->getQuestionForStudent(),
+            'options' => $strategy->getOptions(),
         ];
     }
 }

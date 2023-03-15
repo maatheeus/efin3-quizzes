@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class GiftQuestionDto implements DtoContract, InstantiateFromRequest
 {
-    private string $giftQuizId;
+    private int $giftQuizId;
     private string $value;
 
-    public function __construct(string $giftQuizId, string $value)
+    public function __construct(int $giftQuizId, string $value)
     {
         $this->giftQuizId = $giftQuizId;
         $this->value = $value;
     }
 
-    public function getGiftQuizId(): string
+    public function getGiftQuizId(): int
     {
         return $this->giftQuizId;
     }
