@@ -10,11 +10,13 @@ class GiftQuestionDto implements DtoContract, InstantiateFromRequest
 {
     private int $giftQuizId;
     private string $value;
+    private int $score;
 
-    public function __construct(int $giftQuizId, string $value)
+    public function __construct(int $giftQuizId, string $value, int $score)
     {
         $this->giftQuizId = $giftQuizId;
         $this->value = $value;
+        $this->score = $score;
     }
 
     public function getGiftQuizId(): int
@@ -27,11 +29,17 @@ class GiftQuestionDto implements DtoContract, InstantiateFromRequest
         return $this->value;
     }
 
+    public function getScore(): int
+    {
+        return $this->score;
+    }
+
     public function toArray(): array
     {
         return [
             'topic_gift_quiz_id' => $this->getGiftQuizId(),
             'value' => $this->getValue(),
+            'score' => $this->getScore(),
         ];
     }
 
@@ -39,7 +47,8 @@ class GiftQuestionDto implements DtoContract, InstantiateFromRequest
     {
         return new static(
             $request->input('topic_gift_quiz_id'),
-            $request->input('value')
+            $request->input('value'),
+            $request->input('score')
         );
     }
 }

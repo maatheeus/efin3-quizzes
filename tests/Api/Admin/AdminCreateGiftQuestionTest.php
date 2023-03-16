@@ -2,6 +2,8 @@
 
 namespace EscolaLms\TopicTypeGift\Tests\Api\Admin;
 
+use EscolaLms\TopicTypeGift\Models\GiftQuestion;
+
 class AdminCreateGiftQuestionTest extends GiftQuestionTestCase
 {
     public function testAdminCreateGiftQuestionUnauthorized(): void
@@ -12,18 +14,20 @@ class AdminCreateGiftQuestionTest extends GiftQuestionTestCase
 
     public function testAdminCreateGiftQuestion(): void
     {
-        $value = 'Two plus two equals {=four =4}';
+        $question = GiftQuestion::factory()->make();
 
         $this->actingAs($this->admin, 'api')
             ->postJson('api/admin/gift-questions', [
                 'topic_gift_quiz_id' => $this->quiz->getKey(),
-                'value' => $value,
+                'value' => $question->value,
+                'score' => $question->score,
             ])
             ->assertCreated();
 
         $this->assertDatabaseHas('topic_gift_questions', [
-            'value' => $value,
             'topic_gift_quiz_id' => $this->quiz->getKey(),
+            'value' => $question->value,
+            'score' => $question->score,
         ]);
     }
 }

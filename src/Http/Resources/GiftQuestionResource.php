@@ -18,6 +18,7 @@ class GiftQuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
+            'score' => $this->score,
             'title' => $strategy->getTitle(),
             'question' => $strategy->getQuestionForStudent(),
             'options' => $strategy->getOptions(),

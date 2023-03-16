@@ -26,19 +26,21 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
 
     public function testAdminUpdateGiftQuestion(): void
     {
-        $newQuestion = 'Who\'s buried in Grant\'s tomb?{~Grant ~Jefferson =no one}';
+        $question = GiftQuestion::factory()->make();
 
         $this->actingAs($this->admin, 'api')
             ->putJson('api/admin/gift-questions/' . $this->question->getKey(), [
                 'topic_gift_quiz_id' => $this->quiz->getKey(),
-                'value' => $newQuestion,
+                'value' => $question->value,
+                'score' => $question->score,
             ])
             ->assertOk();
 
         $this->assertDatabaseHas('topic_gift_questions', [
             'id' => $this->question->getKey(),
-            'value' => $newQuestion,
             'topic_gift_quiz_id' => $this->quiz->getKey(),
+            'value' => $question->value,
+            'score' => $question->score,
         ]);
     }
 }

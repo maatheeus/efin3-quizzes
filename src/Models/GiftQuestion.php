@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int $topic_gift_quiz_id
  * @property string $value
  * @property string $type
+ * @property int $score
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -30,6 +31,7 @@ class GiftQuestion extends Model
         'topic_gift_quiz_id',
         'value',
         'type',
+        'score',
     ];
 
     public function giftQuiz(): BelongsTo

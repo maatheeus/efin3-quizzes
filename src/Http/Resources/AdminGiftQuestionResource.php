@@ -18,6 +18,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="value",
  *          type="string"
  *      ),
+ *      @OA\Property(
+ *          property="type",
+ *          description="type",
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="score",
+ *          description="score",
+ *          type="number"
+ *      ),
  * )
  *
  */
@@ -32,6 +42,8 @@ class AdminGiftQuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'value' => $this->value,
+            'type' => $this->type,
+            'score' => $this->score,
         ];
     }
 }

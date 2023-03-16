@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Database\Factories;
 
+use EscolaLms\TopicTypeGift\Enum\QuestionTypeEnum;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -11,22 +12,42 @@ class GiftQuestionFactory extends Factory
 
     public function definition(): array
     {
+        $randomElement = $this->faker->randomElement($this->getExamples());
+
         return [
-            'value' => $this->faker->randomElement($this->getExamples()),
+            'value' => $randomElement['question'],
+            'type' => $randomElement['type'],
+            'score' => $this->faker->numberBetween(1, 20),
         ];
     }
 
     private function getExamples(): array
     {
         return [
-            'Who\'s buried in Grant\'s tomb?{~Grant ~Jefferson =no one}',
-            'Grant is {~buried =entombed ~living} in Grant\'s tomb.',
-            'Grant is buried in Grant\'s tomb.{FALSE}',
-            'Who\'s buried in Grant\'s tomb?{=no one =nobody}',
-            'When was Ulysses S. Grant born?{#1822:1}',
-            'The American holiday of Thanksgiving is celebrated on the {~second ~third =fourth} Thursday of November.',
-            'Two plus two equals {=four =4}.',
-            'What is the value of pi (to 3 decimal places)? {#3.1415:0.0005}.',
+            [
+                'question' => 'Who\'s buried in Grant\'s tomb?{~Grant ~Jefferson =no one}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+            ],
+            [
+                'question' => 'Grant is {~buried =entombed ~living} in Grant\'s tomb.',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+            ],
+            [
+                'question' => 'Grant is buried in Grant\'s tomb.{FALSE}',
+                'type' => QuestionTypeEnum::TRUE_FALSE,
+            ],
+            [
+                'question' => 'Who\'s buried in Grant\'s tomb?{=no one =nobody}',
+                'type' => QuestionTypeEnum::SHORT_ANSWERS,
+            ],
+            [
+                'question' => 'When was Ulysses S. Grant born?{#1822:1}',
+                'type' => QuestionTypeEnum::NUMERICAL_QUESTION,
+            ],
+            [
+                'question' => 'When was Ulysses S. Grant born?{#1822:1}',
+                'type' => QuestionTypeEnum::NUMERICAL_QUESTION,
+            ],
         ];
     }
 }

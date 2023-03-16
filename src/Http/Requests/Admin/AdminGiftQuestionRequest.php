@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @OA\Schema(
  *      schema="AdminGiftQuestionRequest",
- *      required={"topic_gift_quiz_id", "value"},
+ *      required={"topic_gift_quiz_id", "value", "score"},
  *      @OA\Property(
  *          property="topic_gift_quiz_id",
  *          description="topic_gift_quiz_id",
@@ -20,6 +20,12 @@ use Illuminate\Foundation\Http\FormRequest;
  *          property="value",
  *          description="value",
  *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="score",
+ *          description="max score",
+ *          type="number",
+ *          example="1"
  *      ),
  * )
  *
@@ -31,6 +37,7 @@ class AdminGiftQuestionRequest extends FormRequest
         return [
             'topic_gift_quiz_id' => ['required', 'integer', 'exists:topic_gift_quizzes,id'],
             'value' => ['required', 'string'],
+            'score' => ['required', 'integer', 'min:1'],
         ];
     }
 
