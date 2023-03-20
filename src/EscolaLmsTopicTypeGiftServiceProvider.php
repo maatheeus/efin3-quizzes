@@ -10,9 +10,13 @@ use EscolaLms\TopicTypeGift\Http\Resources\TopicType\Export\GiftQuizResource as 
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Providers\AuthServiceProvider;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuestionRepositoryContract;
+use EscolaLms\TopicTypeGift\Repositories\Contracts\QuizAttemptRepositoryContract;
 use EscolaLms\TopicTypeGift\Repositories\GiftQuestionRepository;
+use EscolaLms\TopicTypeGift\Repositories\QuizAttemptRepository;
 use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuestionServiceContract;
+use EscolaLms\TopicTypeGift\Services\Contracts\QuizAttemptServiceContract;
 use EscolaLms\TopicTypeGift\Services\GiftQuestionService;
+use EscolaLms\TopicTypeGift\Services\QuizAttemptService;
 use EscolaLms\TopicTypes\EscolaLmsTopicTypesServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,10 +27,12 @@ class EscolaLmsTopicTypeGiftServiceProvider extends ServiceProvider
 {
     public const SERVICES = [
         GiftQuestionServiceContract::class => GiftQuestionService::class,
+        QuizAttemptServiceContract::class => QuizAttemptService::class,
     ];
 
     public const REPOSITORIES = [
         GiftQuestionRepositoryContract::class => GiftQuestionRepository::class,
+        QuizAttemptRepositoryContract::class => QuizAttemptRepository::class,
     ];
 
     public $singletons = self::SERVICES + self::REPOSITORIES;

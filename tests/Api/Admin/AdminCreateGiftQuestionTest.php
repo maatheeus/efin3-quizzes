@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Tests\Api\Admin;
 
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
+use EscolaLms\TopicTypeGift\Tests\Api\GiftQuestionTestCase;
 
 class AdminCreateGiftQuestionTest extends GiftQuestionTestCase
 {

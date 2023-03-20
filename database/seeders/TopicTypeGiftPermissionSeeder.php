@@ -20,7 +20,10 @@ class TopicTypeGiftPermissionSeeder extends Seeder
 
         $admin->givePermissionTo(TopicTypeGiftProjectPermissionEnum::getValues());
 
-//        $student->givePermissionTo([
-//        ]);
+        $student->givePermissionTo([
+            TopicTypeGiftProjectPermissionEnum::CREATE_OWN_QUIZ_ATTEMPT,
+            TopicTypeGiftProjectPermissionEnum::LIST_OWN_QUIZ_ATTEMPT,
+            TopicTypeGiftProjectPermissionEnum::READ_OWN_QUIZ_ATTEMPT,
+        ]);
     }
 }
