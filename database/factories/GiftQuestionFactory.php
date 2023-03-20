@@ -4,6 +4,7 @@ namespace EscolaLms\TopicTypeGift\Database\Factories;
 
 use EscolaLms\TopicTypeGift\Enum\QuestionTypeEnum;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
+use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GiftQuestionFactory extends Factory
@@ -18,6 +19,7 @@ class GiftQuestionFactory extends Factory
             'value' => $randomElement['question'],
             'type' => $randomElement['type'],
             'score' => $this->faker->numberBetween(1, 20),
+            'topic_gift_quiz_id' => GiftQuiz::factory(),
         ];
     }
 

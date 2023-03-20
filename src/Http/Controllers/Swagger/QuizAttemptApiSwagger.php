@@ -5,6 +5,7 @@ namespace EscolaLms\TopicTypeGift\Http\Controllers\Swagger;
 use EscolaLms\TopicTypeGift\Http\Requests\CreateQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\ListQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\ReadQuizAttemptRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\SaveAttemptAnswerRequest;
 use Illuminate\Http\JsonResponse;
 
 interface QuizAttemptApiSwagger

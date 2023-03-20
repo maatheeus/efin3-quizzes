@@ -12,7 +12,8 @@ class QuizAttemptResource extends QuizAttemptSimpleResource
 {
     public function toArray($request): array
     {
-        // todo
-        return parent::toArray($request);
+        return array_merge(parent::toArray($request), [
+           'answers' => AttemptAnswerResource::collection($this->answers),
+        ]);
     }
 }

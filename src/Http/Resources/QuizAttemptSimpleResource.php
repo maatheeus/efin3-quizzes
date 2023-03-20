@@ -46,12 +46,17 @@ class QuizAttemptSimpleResource extends JsonResource
 {
     public function toArray($request): array
     {
+        $maxScore = $this->giftQuiz->questions->sum('score');
+        $resultScore = $this->answers->sum('score');
+
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
             'topic_gift_quiz_id' => $this->topic_gift_quiz_id,
             'started_at' => $this->started_at,
             'end_at' => $this->end_at,
+            'max_score' => $maxScore,
+            'result_score' => $resultScore,
         ];
     }
 }

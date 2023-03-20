@@ -1,5 +1,6 @@
 <?php
 
+use EscolaLms\TopicTypeGift\Http\Controllers\AttemptAnswerApiController;
 use EscolaLms\TopicTypeGift\Http\Controllers\GiftQuestionApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\QuizAttemptApiController;
 use Illuminate\Support\Facades\Route;
@@ -15,5 +16,9 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
         Route::get(null, [QuizAttemptApiController::class, 'index']);
         Route::post(null, [QuizAttemptApiController::class, 'create']);
         Route::get('{id}', [QuizAttemptApiController::class, 'read']);
+    });
+
+    Route::prefix('quiz-answers')->group(function () {
+        Route::post(null, [AttemptAnswerApiController::class, 'saveAnswer']);
     });
 });

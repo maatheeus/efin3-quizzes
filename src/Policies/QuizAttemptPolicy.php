@@ -6,6 +6,7 @@ use EscolaLms\Auth\Models\User;
 use EscolaLms\TopicTypeGift\Enum\TopicTypeGiftProjectPermissionEnum;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Carbon;
 
 class QuizAttemptPolicy
 {
@@ -25,5 +26,11 @@ class QuizAttemptPolicy
     public function listOwn(User $user): bool
     {
         return $user->can(TopicTypeGiftProjectPermissionEnum::LIST_OWN_QUIZ_ATTEMPT);
+    }
+
+    public function addAnswerOwn(User $user, QuizAttempt $attempt): bool
+    {
+        return $this->readOwn($user, $attempt)
+            && ($attempt->end_at === null || $attempt->end_at > Carbon::now());
     }
 }

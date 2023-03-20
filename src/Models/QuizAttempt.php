@@ -4,9 +4,11 @@ namespace EscolaLms\TopicTypeGift\Models;
 
 use EscolaLms\TopicTypeGift\Database\Factories\QuizAttemptFactory;
 use EscolaLms\Auth\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -21,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $updated_at
  *
  * @property-read GiftQuiz $giftQuiz
+ * @property-read AttemptAnswer[]|Collection $answers
  */
 class QuizAttempt extends Model
 {
@@ -35,6 +38,11 @@ class QuizAttempt extends Model
         'end_at',
     ];
 
+    public $casts = [
+        'started_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
+
     public function giftQuiz(): BelongsTo
     {
         return $this->belongsTo(GiftQuiz::class, 'topic_gift_quiz_id');
@@ -43,6 +51,11 @@ class QuizAttempt extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(AttemptAnswer::class, 'topic_gift_quiz_attempt_id');
     }
 
     protected static function newFactory(): QuizAttemptFactory
