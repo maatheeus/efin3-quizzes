@@ -40,6 +40,7 @@ class QuizAttemptPolicy
     }
 
 
+
     public function update(User $user, QuizAttempt $attempt): bool
     {
         return $user->can(TopicTypeGiftProjectPermissionEnum::UPDATE_QUIZ_ATTEMPT);
