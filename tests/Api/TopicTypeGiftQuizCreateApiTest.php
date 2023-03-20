@@ -30,6 +30,8 @@ class TopicTypeGiftQuizCreateApiTest extends TestCase
                 'title' => 'GiftQuiz',
                 'lesson_id' => $lesson->getKey(),
                 'topicable_type' => GiftQuiz::class,
+                'max_attempts' => 2,
+                'max_execution_time' => 10,
                 'value' => 'lorem ipsum',
             ])
             ->assertCreated();
@@ -39,6 +41,8 @@ class TopicTypeGiftQuizCreateApiTest extends TestCase
 
         $this->assertDatabaseHas('topic_gift_quizzes', [
             'value' => $value,
+            'max_attempts' => 2,
+            'max_execution_time' => 10,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Http\Controllers;
 
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
+use EscolaLms\TopicTypeGift\Exceptions\TooManyAttemptsException;
 use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\QuizAttemptApiSwagger;
 use EscolaLms\TopicTypeGift\Http\Requests\CreateQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\ListQuizAttemptRequest;
@@ -35,8 +36,11 @@ class QuizAttemptApiController extends EscolaLmsBaseController implements QuizAt
 
     public function create(CreateQuizAttemptRequest $request): JsonResponse
     {
-        $result = $this->attemptService->create($request->getQuizAttemptDto());
-
-        return $this->sendResponseForResource(QuizAttemptSimpleResource::make($result), __('Quiz attempt created successfully.'));
+        try {
+            $result = $this->attemptService->create($request->getQuizAttemptDto());
+            return $this->sendResponseForResource(QuizAttemptSimpleResource::make($result), __('Quiz attempt created successfully.'));
+        } catch (TooManyAttemptsException $e) {
+            return $this->sendError($e->getMessage(), $e->getCode());
+        }
     }
 }

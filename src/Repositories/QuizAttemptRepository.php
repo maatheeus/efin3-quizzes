@@ -16,7 +16,10 @@ class QuizAttemptRepository extends BaseRepository implements QuizAttemptReposit
 
     public function getFieldsSearchable(): array
     {
-        return [];
+        return [
+            'user_id',
+            'topic_gift_quiz_id',
+        ];
     }
 
     public function findByCriteria(array $criteria, int $perPage): LengthAwarePaginator

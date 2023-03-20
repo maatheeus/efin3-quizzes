@@ -12,4 +12,6 @@ class TopicTypeGiftProjectPermissionEnum extends BasicEnum
 
     public const LIST_QUIZ_ATTEMPT = 'quiz-attempt_list';
     public const READ_QUIZ_ATTEMPT = 'quiz-attempt_read';
+    public const UPDATE_QUIZ_ATTEMPT = 'quiz-attempt_update';
+
 }

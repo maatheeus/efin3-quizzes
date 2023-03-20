@@ -24,6 +24,16 @@ use Illuminate\Support\Carbon;
  *          property="value",
  *          description="value",
  *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="max_attempts",
+ *          description="max_attempts",
+ *          type="number"
+ *      ),
+ *      @OA\Property(
+ *          property="max_execution_time",
+ *          description="max execution time in minutes",
+ *          type="number"
  *      )
  * )
  */
@@ -33,6 +43,8 @@ use Illuminate\Support\Carbon;
  *
  * @property int $id
  * @property string $value
+ * @property ?integer $max_attempts
+ * @property ?integer $max_execution_time
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -44,10 +56,25 @@ class GiftQuiz extends AbstractTopicContent
 
     public $table = 'topic_gift_quizzes';
 
+    protected $fillable = [
+        'value',
+        'max_attempts',
+        'max_execution_time',
+    ];
+
+    protected $casts = [
+        'id' => 'integer',
+        'value' => 'string',
+        'max_attempts' => 'integer',
+        'max_execution_time' => 'integer',
+    ];
+
     public static function rules(): array
     {
         return [
             'value' => ['required', 'string'],
+            'max_attempts' => ['nullable', 'integer', 'min:1'],
+            'max_execution_time' => ['nullable', 'integer', 'min:1'],
         ];
     }
 

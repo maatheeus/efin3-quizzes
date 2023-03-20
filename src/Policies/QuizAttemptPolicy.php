@@ -39,6 +39,13 @@ class QuizAttemptPolicy
         return $user->can(TopicTypeGiftProjectPermissionEnum::READ_QUIZ_ATTEMPT);
     }
 
+
+    public function update(User $user, QuizAttempt $attempt): bool
+    {
+        return $user->can(TopicTypeGiftProjectPermissionEnum::UPDATE_QUIZ_ATTEMPT);
+    }
+
+
     public function list(User $user): bool
     {
         return $user->can(TopicTypeGiftProjectPermissionEnum::LIST_QUIZ_ATTEMPT);

@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Services;
 
+use EscolaLms\TopicTypeGift\Dtos\AdminUpdateAttemptAnswerDto;
 use EscolaLms\TopicTypeGift\Dtos\SaveAttemptAnswerDto;
 use EscolaLms\TopicTypeGift\Models\AttemptAnswer;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
@@ -36,5 +37,11 @@ class AttemptAnswerService implements AttemptAnswerServiceContract
             'feedback' => $result->getFeedback(),
             'score' => $result->getScore(),
         ]);
+    }
+
+    public function adminUpdate(int $id, AdminUpdateAttemptAnswerDto $dto): AttemptAnswer
+    {
+        /** @var AttemptAnswer */
+        return $this->answerRepository->update($dto->toArray(), $id);
     }
 }

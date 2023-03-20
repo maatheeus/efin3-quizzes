@@ -13,6 +13,8 @@ class GiftQuizFactory extends Factory
     {
         return [
             'value' => $this->faker->text,
+            'max_attempts' => $this->faker->numberBetween(1, 10),
+            'max_execution_time' => $this->faker->numberBetween(1, 20),
         ];
     }
 }

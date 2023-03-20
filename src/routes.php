@@ -1,5 +1,6 @@
 <?php
 
+use EscolaLms\TopicTypeGift\Http\Controllers\AttemptAnswerApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\AttemptAnswerApiController;
 use EscolaLms\TopicTypeGift\Http\Controllers\GiftQuestionApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\QuizAttemptApiAdminController;
@@ -18,6 +19,11 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::get(null, [QuizAttemptApiAdminController::class, 'index']);
             Route::get('{id}', [QuizAttemptApiAdminController::class, 'read']);
         });
+
+        Route::prefix('quiz-answers')->group(function () {
+            Route::patch('{id}', [AttemptAnswerApiAdminController::class, 'update']);
+        });
+
     });
 
     Route::prefix('quiz-attempts')->group(function () {

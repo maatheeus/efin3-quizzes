@@ -17,6 +17,8 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
         return [
             'id' => $this->id,
             'value' => $this->value,
+            'max_attempts' => $this->max_attempts,
+            'max_execution_time' => $this->max_execution_time,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'questions' => AdminGiftQuestionResource::collection($this->questions),
