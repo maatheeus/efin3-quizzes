@@ -20,6 +20,11 @@ class QuizAttemptService implements QuizAttemptServiceContract
         $this->attemptRepository = $attemptRepository;
     }
 
+    public function findAll(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto): LengthAwarePaginator
+    {
+        return $this->attemptRepository->findByCriteria($criteriaDto->toArray(), $paginationDto->getPerPage());
+    }
+
     public function findByUser(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, int $userId): LengthAwarePaginator
     {
         $criteria = $criteriaDto->toArray();

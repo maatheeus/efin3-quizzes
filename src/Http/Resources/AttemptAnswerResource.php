@@ -13,6 +13,7 @@ class AttemptAnswerResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'id' => $this->getKey(),
             'topic_gift_question_id' => $this->topic_gift_question_id,
             'answer' => $this->answer,
             'score' => $this->score,

@@ -33,4 +33,14 @@ class QuizAttemptPolicy
         return $this->readOwn($user, $attempt)
             && ($attempt->end_at === null || $attempt->end_at > Carbon::now());
     }
+
+    public function read(User $user, QuizAttempt $attempt): bool
+    {
+        return $user->can(TopicTypeGiftProjectPermissionEnum::READ_QUIZ_ATTEMPT);
+    }
+
+    public function list(User $user): bool
+    {
+        return $user->can(TopicTypeGiftProjectPermissionEnum::LIST_QUIZ_ATTEMPT);
+    }
 }
