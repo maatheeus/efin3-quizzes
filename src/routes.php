@@ -34,5 +34,6 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
 
     Route::prefix('quiz-answers')->group(function () {
         Route::post(null, [AttemptAnswerApiController::class, 'saveAnswer']);
+        Route::post('all', [AttemptAnswerApiController::class, 'saveAllAnswers']);
     });
 });

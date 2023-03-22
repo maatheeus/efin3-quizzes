@@ -35,6 +35,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="string",
  *          format="date-time"
  *      ),
+ *      @OA\Property(
+ *          property="questions",
+ *          description="questions",
+ *          type="array",
+ *          @OA\Items(ref="#/components/schemas/GiftQuestionResource")
+ *      )
  * )
  *
  */
@@ -57,6 +63,7 @@ class QuizAttemptSimpleResource extends JsonResource
             'end_at' => $this->end_at,
             'max_score' => $maxScore,
             'result_score' => $resultScore,
+            'questions' => GiftQuestionResource::collection($this->giftQuiz->questions->sortBy('id')),
         ];
     }
 }

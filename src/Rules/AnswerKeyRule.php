@@ -23,7 +23,7 @@ class AnswerKeyRule implements Rule
         $strategy = GiftQuestionStrategyFactory::create($question);
         $answerKey = $strategy->getAnswerKey();
         if ($answerKey && !array_key_exists($answerKey, $value)) {
-            $this->message = __(':key is required', ['key' => $answerKey]);
+            $this->message = __('Field :key is required', ['key' => $answerKey]);
             return false;
         }
 

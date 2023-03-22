@@ -43,7 +43,7 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
         return '';
     }
 
-    public function getFeedbackByAnswer(string $answer): ?string
+    public function getFeedbackByAnswer(string $answer): string
     {
         $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
 
@@ -52,7 +52,7 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
             return trim(Str::replace('#', ' ', $matches[1]));
         }
 
-        return null;
+        return '';
     }
 
     public function getAnswerKey(): string
