@@ -9,6 +9,7 @@ use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Tests\TestCase;
+use Illuminate\Support\Carbon;
 
 class QuizAttemptReadApiTest extends TestCase
 {
@@ -31,7 +32,7 @@ class QuizAttemptReadApiTest extends TestCase
             ->assertUnauthorized();
     }
 
-    public function testQuizAttemptReadReadForbidden(): void
+    public function testQuizAttemptReadForbidden(): void
     {
         $this->actingAs($this->makeStudent(), 'api')
             ->getJson('api/quiz-attempts/' . $this->attempt->getKey())
@@ -64,8 +65,11 @@ class QuizAttemptReadApiTest extends TestCase
         $question1 = GiftQuestion::factory()->state(['topic_gift_quiz_id' => $quiz->getKey()])->create();
         $question2 = GiftQuestion::factory()->state(['topic_gift_quiz_id' => $quiz->getKey()])->create();
 
-        $attempt = QuizAttempt::factory()
-            ->state(['user_id' => $this->student->getKey(), 'topic_gift_quiz_id' => $quiz->getKey()])
+        $attempt = QuizAttempt::factory()->state([
+            'user_id' => $this->student->getKey(),
+            'topic_gift_quiz_id' => $quiz->getKey(),
+            'end_at' => Carbon::now()->subMinutes(),
+        ])
             ->create();
 
         $answer1 = AttemptAnswer::factory()
@@ -96,5 +100,27 @@ class QuizAttemptReadApiTest extends TestCase
                 'answer' => $answer2->answer,
                 'feedback' => $answer2->feedback,
             ]);
+    }
+
+    public function testQuizAttemptShouldNotReturnResultWhenAttemptIsActive(): void
+    {
+        $quiz = GiftQuiz::factory()->create();
+        $question1 = GiftQuestion::factory()->state(['topic_gift_quiz_id' => $quiz->getKey()])->create();
+
+        $attempt = QuizAttempt::factory()->state([
+            'user_id' => $this->student->getKey(),
+            'topic_gift_quiz_id' => $quiz->getKey(),
+        ])
+            ->create();
+
+        AttemptAnswer::factory()
+            ->state(['topic_gift_question_id' => $question1->getKey(), 'topic_gift_quiz_attempt_id' => $attempt->getKey()])
+            ->create();
+
+        $this->actingAs($this->student, 'api')
+            ->getJson('api/quiz-attempts/' . $attempt->getKey())
+            ->assertOk()
+            ->assertJsonFragment(['result_score' => null])
+            ->assertJsonCount(1, 'data.answers');
     }
 }

@@ -9,6 +9,7 @@ use EscolaLms\TopicTypeGift\Http\Resources\TopicType\Client\GiftQuizResource as 
 use EscolaLms\TopicTypeGift\Http\Resources\TopicType\Export\GiftQuizResource as ExportGiftQuizResource;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Providers\AuthServiceProvider;
+use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use EscolaLms\TopicTypeGift\Repositories\AttemptAnswerRepository;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\AttemptAnswerRepositoryContract;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuestionRepositoryContract;
@@ -61,5 +62,6 @@ class EscolaLmsTopicTypeGiftServiceProvider extends ServiceProvider
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(EscolaLmsTopicTypesServiceProvider::class);
         $this->app->register(EscolaLmsCourseServiceProvider::class);
+        $this->app->register(SettingsServiceProvider::class);
     }
 }

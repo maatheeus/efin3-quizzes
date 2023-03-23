@@ -4,6 +4,7 @@ namespace EscolaLms\TopicTypeGift\Models;
 
 use EscolaLms\TopicTypeGift\Database\Factories\QuizAttemptFactory;
 use EscolaLms\Auth\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,8 @@ use Illuminate\Support\Carbon;
  *
  * @property-read GiftQuiz $giftQuiz
  * @property-read AttemptAnswer[]|Collection $answers
+ * @property-read User $user
+ *
  */
 class QuizAttempt extends Model
 {
@@ -56,6 +59,16 @@ class QuizAttempt extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(AttemptAnswer::class, 'topic_gift_quiz_attempt_id');
+    }
+
+    public function isEnded(): bool
+    {
+        return $this->end_at != null && $this->end_at <= Carbon::now();
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->whereNull('end_at')->orWhere('end_at', '>=', Carbon::now());
     }
 
     protected static function newFactory(): QuizAttemptFactory

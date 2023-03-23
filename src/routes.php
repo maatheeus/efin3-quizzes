@@ -28,8 +28,9 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
 
     Route::prefix('quiz-attempts')->group(function () {
         Route::get(null, [QuizAttemptApiController::class, 'index']);
-        Route::post(null, [QuizAttemptApiController::class, 'create']);
+        Route::post(null, [QuizAttemptApiController::class, 'getActiveAttempt']);
         Route::get('{id}', [QuizAttemptApiController::class, 'read']);
+        Route::post('{id}/end', [QuizAttemptApiController::class, 'markAsEnded']);
     });
 
     Route::prefix('quiz-answers')->group(function () {

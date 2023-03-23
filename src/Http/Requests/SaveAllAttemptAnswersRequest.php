@@ -55,6 +55,11 @@ class SaveAllAttemptAnswersRequest extends FormRequest
                     $fail($rule->message());
                 }
             }],
+            'answers.*.answer.text' => ['sometimes', 'string'],
+            'answers.*.answer.matching' => ['sometimes', 'array'],
+            'answers.*.answer.multiple' => ['sometimes', 'array'],
+            'answers.*.answer.bool' => ['sometimes', 'boolean'],
+            'answers.*.answer.numeric' => ['sometimes', 'numeric'],
         ];
     }
 

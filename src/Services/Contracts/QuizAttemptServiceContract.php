@@ -14,7 +14,8 @@ interface QuizAttemptServiceContract
     /**
      * @throws TooManyAttemptsException
      */
-    public function create(QuizAttemptDto $dto): QuizAttempt;
+    public function getActive(QuizAttemptDto $dto): QuizAttempt;
     public function findByUser(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, int $userId): LengthAwarePaginator;
     public function findAll(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto): LengthAwarePaginator;
+    public function findById(int $id): QuizAttempt;
 }

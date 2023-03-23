@@ -7,12 +7,15 @@ use EscolaLms\TopicTypeGift\Dtos\Criteria\PageDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\QuizAttemptCriteriaDto;
 use EscolaLms\TopicTypeGift\Dtos\QuizAttemptDto;
 use EscolaLms\TopicTypeGift\Exceptions\TooManyAttemptsException;
+use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
+use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\QuizAttemptRepositoryContract;
 use EscolaLms\TopicTypeGift\Services\Contracts\QuizAttemptServiceContract;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class QuizAttemptService implements QuizAttemptServiceContract
 {
@@ -36,26 +39,39 @@ class QuizAttemptService implements QuizAttemptServiceContract
         return $this->attemptRepository->findByCriteria($criteria, $paginationDto->getPerPage());
     }
 
+    public function findById(int $id): QuizAttempt
+    {
+        /** @var QuizAttempt */
+        return $this->attemptRepository->find($id);
+    }
+
     /**
      * @throws TooManyAttemptsException
      */
-    public function create(QuizAttemptDto $dto): QuizAttempt
+    public function getActive(QuizAttemptDto $dto): QuizAttempt
     {
+        /** @var ?QuizAttempt $active */
+        $active = $this->attemptRepository->findActive($dto->getUserId(), $dto->getQuizId());
+        if ($active) {
+            return $active;
+        }
+
         /** @var GiftQuiz $quiz */
         $quiz = GiftQuiz::findOrFail($dto->getQuizId());
-
-        $userAttempt = $this->attemptRepository->allQuery([
-            'user_id' => $dto->getUserId(),
-            'topic_gift_quiz_id' => $dto->getQuizId()
-        ]);
-
-        if (is_numeric($quiz->max_attempts) && $userAttempt->count() >= $quiz->max_attempts) {
+        $userAttempts = $this->attemptRepository->queryByUserIdAndQuizId($dto->getUserId(), $dto->getQuizId());
+        if (is_numeric($quiz->max_attempts) && $userAttempts->count() >= $quiz->max_attempts) {
             throw new TooManyAttemptsException();
         }
 
-        /** @var QuizAttempt */
-        return $this->attemptRepository->create(array_merge($dto->toArray(), [
-            'end_at' => $quiz->max_execution_time ? Carbon::now()->addMinutes($quiz->max_execution_time) : null,
+        /** @var QuizAttempt $attempt */
+        $attempt =  $this->attemptRepository->create(array_merge($dto->toArray(), [
+            'end_at' => $quiz->max_execution_time
+                ? Carbon::now()->addMinutes($quiz->max_execution_time)
+                : Carbon::now()->addMinutes(Config::get(SettingsServiceProvider::KEY . 'max_quiz_time', 120)),
         ]));
+
+        MarkAttemptAsEnded::dispatch($attempt->getKey())->delay($attempt->end_at);
+
+        return $attempt;
     }
 }

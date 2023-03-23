@@ -48,8 +48,8 @@ class AttemptAnswerResource extends JsonResource
             'id' => $this->getKey(),
             'topic_gift_question_id' => $this->topic_gift_question_id,
             'answer' => $this->answer,
-            'score' => $this->score,
-            'feedback' => $this->feedback,
+            'score' => $this->attempt->isEnded() ? $this->score : null,
+            'feedback' => $this->attempt->isEnded() ? $this->feedback : null,
         ];
     }
 }

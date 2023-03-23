@@ -42,6 +42,11 @@ class SaveAttemptAnswerRequest extends FormRequest
             'topic_gift_quiz_attempt_id' => ['required', 'integer', 'exists:topic_gift_quiz_attempts,id'],
             'topic_gift_question_id' => ['required', 'integer', 'exists:topic_gift_questions,id'],
             'answer' => ['array', new AnswerKeyRule($this->get('topic_gift_question_id'))],
+            'answer.text' => ['sometimes', 'string'],
+            'answer.matching' => ['sometimes', 'array'],
+            'answer.multiple' => ['sometimes', 'array'],
+            'answer.bool' => ['sometimes', 'boolean'],
+            'answer.numeric' => ['sometimes', 'numeric'],
         ];
     }
 

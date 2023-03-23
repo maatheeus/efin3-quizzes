@@ -5,6 +5,7 @@ namespace EscolaLms\TopicTypeGift\Services;
 use EscolaLms\TopicTypeGift\Dtos\AdminUpdateAttemptAnswerDto;
 use EscolaLms\TopicTypeGift\Dtos\SaveAllAttemptAnswersDto;
 use EscolaLms\TopicTypeGift\Dtos\SaveAttemptAnswerDto;
+use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\AttemptAnswer;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Repositories\AttemptAnswerRepository;
@@ -45,13 +46,17 @@ class AttemptAnswerService implements AttemptAnswerServiceContract
     public function saveAllAnswers(SaveAllAttemptAnswersDto $dto): Collection
     {
         return DB::transaction(function () use ($dto) {
-            return collect($dto->getAnswers())->map(function ($answer) use ($dto) {
+            $result = collect($dto->getAnswers())->map(function ($answer) use ($dto) {
                 return $this->saveAnswer(new SaveAttemptAnswerDto(
                     $dto->getAttemptId(),
                     $answer['topic_gift_question_id'],
                     $answer['answer'],
                 ));
             });
+
+            MarkAttemptAsEnded::dispatch($dto->getAttemptId());
+
+            return $result;
         });
     }
 

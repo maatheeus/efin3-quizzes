@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 
 /**
  * @OA\Schema(
- *      schema="CreateQuizAttemptRequest",
+ *      schema="GetActiveAttemptRequest",
  *      required={"topic_gift_quiz_id"},
  *      @OA\Property(
  *          property="topic_gift_quiz_id",
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Gate;
  * )
  *
  */
-class CreateQuizAttemptRequest extends FormRequest
+class GetActiveAttemptRequest extends FormRequest
 {
     public function authorize(): bool
     {

@@ -2,7 +2,8 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Controllers\Swagger;
 
-use EscolaLms\TopicTypeGift\Http\Requests\CreateQuizAttemptRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\EndQuizAttemptRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\GetActiveAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\ListQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\ReadQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\SaveAttemptAnswerRequest;
@@ -114,7 +115,7 @@ interface QuizAttemptApiSwagger
     /**
      * @OA\Post(
      *      path="/api/quiz-attempts",
-     *      summary="Store a newly Quiz Attempt",
+     *      summary="Create a new attempt or return an active attempt",
      *      tags={"Gift Quiz Attempt"},
      *      description="Store Gift Quiz Attempt",
      *      security={
@@ -124,7 +125,7 @@ interface QuizAttemptApiSwagger
      *          required=true,
      *          @OA\MediaType(
      *              mediaType="application/json",
-     *              @OA\Schema(ref="#/components/schemas/CreateQuizAttemptRequest")
+     *              @OA\Schema(ref="#/components/schemas/GetActiveAttemptRequest")
      *          ),
      *      ),
      *      @OA\Response(
@@ -140,7 +141,7 @@ interface QuizAttemptApiSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/QuizAttemptSimpleResource"
+     *                      ref="#/components/schemas/QuizAttemptResource"
      *                  ),
      *                  @OA\Property(
      *                      property="message",
@@ -151,5 +152,47 @@ interface QuizAttemptApiSwagger
      *      )
      * )
      */
-    public function create(CreateQuizAttemptRequest $request): JsonResponse;
+    public function getActiveAttempt(GetActiveAttemptRequest $request): JsonResponse;
+
+    /**
+     * @OA\Post(
+     *      path="/api/quiz-attempts/{id}/end",
+     *      summary="Finish quiz attempt",
+     *      tags={"Gift Quiz Attempt"},
+     *      security={
+     *          {"passport": {}},
+     *      },
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfull operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="success",
+     *                      type="boolean"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="data",
+     *                      ref="#/components/schemas/QuizAttemptResource"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="message",
+     *                      type="string"
+     *                  )
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function markAsEnded(EndQuizAttemptRequest $request): JsonResponse;
 }

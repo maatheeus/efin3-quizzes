@@ -6,9 +6,11 @@ use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TopicTypeGift\Database\Seeders\TopicTypeGiftPermissionSeeder;
 use EscolaLms\TopicTypeGift\Enum\AnswerKeyEnum;
 use EscolaLms\TopicTypeGift\Enum\QuestionTypeEnum;
+use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Tests\TestCase;
+use Illuminate\Support\Facades\Bus;
 
 class AttemptAnswerSaveAllApiTest extends TestCase
 {
@@ -42,6 +44,8 @@ class AttemptAnswerSaveAllApiTest extends TestCase
 
     public function testSaveAllAttemptAnswers(): void
     {
+        Bus::fake([MarkAttemptAsEnded::class]);
+
         $question = GiftQuestion::factory()
             ->state([
                 'value' => 'Grant is buried in Grant\'s tomb.{FALSE}',
@@ -66,5 +70,7 @@ class AttemptAnswerSaveAllApiTest extends TestCase
             'topic_gift_question_id' => $question->getKey(),
             'score' => 3,
         ]);
+
+        Bus::assertDispatched(MarkAttemptAsEnded::class);
     }
 }
