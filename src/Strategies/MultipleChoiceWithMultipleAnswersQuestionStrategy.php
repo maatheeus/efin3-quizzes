@@ -4,34 +4,23 @@ namespace EscolaLms\TopicTypeGift\Strategies;
 
 use EscolaLms\TopicTypeGift\Dtos\CheckAnswerDto;
 use EscolaLms\TopicTypeGift\Enum\AnswerKeyEnum;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class MultipleChoiceWithMultipleAnswersQuestionStrategy extends QuestionStrategy
 {
     public function getOptions(): array
     {
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
-        $answers = preg_split('/\s*~%.*?%\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
-
         return [
-            'answers' => collect($answers)
-                ->map(fn($answer) => $this->removeFeedbackFromAnswer($answer))
+            'answers' => collect($this->getMappedAnswers())
+                ->pluck('value')
                 ->toArray(),
         ];
     }
 
     public function checkAnswer(array $answer): CheckAnswerDto
     {
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
-        $allAnswers = preg_split('/\s*~\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
-        $allAnswers = collect($allAnswers)->map(function ($answer) {
-            return [
-                'value' => trim(Str::beforeLast(Str::afterLast($answer, '%'), '#')),
-                'feedback' => Str::contains($answer, '#') ? Str::after($answer, '#') : '',
-                'percent' => (float) Str::between($answer, '%', '%'),
-            ];
-        });
-
+        $allAnswers = $this->getMappedAnswers();
         $percent = 0;
         $result = new CheckAnswerDto();
 
@@ -43,12 +32,30 @@ class MultipleChoiceWithMultipleAnswersQuestionStrategy extends QuestionStrategy
             }
         }
 
-        $result->setScore($this->questionModel->score * $percent * 0.01);
+        $score = $this->questionModel->score * $percent * 0.01;
+        $result->setScore($score > $this->questionModel->score ? $this->questionModel->score : $score);
+
         return $result;
     }
 
     public function getAnswerKey(): string
     {
         return AnswerKeyEnum::MULTIPLE;
+    }
+
+    private function getMappedAnswers(): Collection
+    {
+        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
+        $answerBlock = preg_replace('/\s+/', ' ', $answerBlock);
+        preg_match_all('/[~=][^~=]*/', $answerBlock, $matches);
+        $allAnswers = $matches[0];
+
+        return collect($allAnswers)->map(function ($answer) {
+            return [
+                'value' => trim(Str::before(preg_replace('/%.*%/', '', substr($answer, 1)), '#')),
+                'feedback' => Str::contains($answer, '#') ? Str::after($answer, '#') : '',
+                'percent' => Str::startsWith($answer, '=') ? 100 : (float) Str::between($answer, '%', '%'),
+            ];
+        });
     }
 }

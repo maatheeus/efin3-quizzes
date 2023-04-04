@@ -51,7 +51,7 @@ trait GiftQuestionTesting
                         'Grant\'s wife',
                         'Grant\'s father',
                     ],
-                ]
+                ],
             ],
             [
                 'question' => '::TrueStatement about Grant::Grant was buried in a tomb in New York City.{T}',
@@ -61,7 +61,7 @@ trait GiftQuestionTesting
                 'options' => [],
             ],
             [
-                'question' => '// question: 0 name: FalseStatement using {FALSE} style 
+                'question' => '// question: 0 name: FalseStatement using {FALSE} style
                                ::FalseStatement about sun::The sun rises in the West.{FALSE}',
                 'type' => QuestionTypeEnum::TRUE_FALSE,
                 'title' => 'FalseStatement about sun',
@@ -153,6 +153,36 @@ trait GiftQuestionTesting
                 'type' => QuestionTypeEnum::DESCRIPTION,
                 'title' => '',
                 'questionForStudent' => 'You can use your pencil and paper for these next math questions.',
+                'options' => [],
+            ],
+            [
+                'question' => '::Jesus hometown::Jesus Christ was from {
+                              ~Jerusalem#This was an important city, but the wrong answer.
+                              ~%25%Bethlehem#He was born here, but not raised here.
+                              ~%50%Galilee#You need to be more specific.
+                              =Nazareth#Yes! That\'s right!
+                              }.',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'title' => 'Jesus hometown',
+                'questionForStudent' => 'Jesus Christ was from _____ .',
+                'options' => [
+                    'answers' => [
+                        'Jerusalem',
+                        'Bethlehem',
+                        'Galilee',
+                        'Nazareth',
+                    ],
+                ],
+            ],
+            [
+                'question' => '::Jesus hometown::Jesus Christ was from {
+                                =Nazareth#Yes! That\'s right!
+                                =%75%Nazereth#Right, but misspelled.
+                                =%25%Bethlehem#He was born here, but not raised here.
+                                }',
+                'type' => QuestionTypeEnum::SHORT_ANSWERS,
+                'title' => 'Jesus hometown',
+                'questionForStudent' => 'Jesus Christ was from',
                 'options' => [],
             ],
         ];

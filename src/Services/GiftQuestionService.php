@@ -66,7 +66,7 @@ class GiftQuestionService implements GiftQuestionServiceContract
             return QuestionTypeEnum::NUMERICAL_QUESTION;
         }
 
-        if (Str::startsWith($answer, '~%')) {
+        if (Str::contains($answer, '~%')) {
             return QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS;
         }
 

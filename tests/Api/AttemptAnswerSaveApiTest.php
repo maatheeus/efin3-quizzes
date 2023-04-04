@@ -242,6 +242,28 @@ class AttemptAnswerSaveApiTest extends TestCase
                 'score' => 1,
                 'resultScore' => 0,
             ],
+            [
+                'question' => '::Jesus hometown::Jesus Christ was from {
+                              ~Jerusalem#This was an important city, but the wrong answer.
+                              ~%25%Bethlehem#He was born here, but not raised here.
+                              ~%50%Galilee#You need to be more specific.
+                              =Nazareth#Yes! That\'s right!
+                              }.',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'answer' => [AnswerKeyEnum::MULTIPLE => ['Nazareth']],
+            ],
+            [
+                'question' => '::Jesus hometown::Jesus Christ was from {
+                              ~Jerusalem#This was an important city, but the wrong answer.
+                              ~%25%Bethlehem#He was born here, but not raised here.
+                              ~%50%Galilee#You need to be more specific.
+                              =Nazareth#Yes! That\'s right!
+                              }.',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'answer' => [AnswerKeyEnum::MULTIPLE => ['Bethlehem', 'Galilee']],
+                'score' => 1,
+                'resultScore' => 0.75,
+            ],
         ];
     }
 }

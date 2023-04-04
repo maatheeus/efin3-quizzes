@@ -43,6 +43,6 @@ abstract class QuestionStrategy implements QuestionStrategyContract
 
     protected function removeFeedbackFromAnswer(string $answer): string
     {
-        return trim(preg_replace('/#.*$/', '', $answer));
+        return trim(preg_replace('/#.*$/', '', trim($answer)));
     }
 }
