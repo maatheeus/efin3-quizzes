@@ -13,6 +13,7 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::post(null, [GiftQuestionApiAdminController::class, 'create']);
             Route::delete('{id}', [GiftQuestionApiAdminController::class, 'delete']);
             Route::put('{id}', [GiftQuestionApiAdminController::class, 'update']);
+            Route::post('sort', [GiftQuestionApiAdminController::class, 'sort']);
         });
 
         Route::prefix('quiz-attempts')->group(function () {

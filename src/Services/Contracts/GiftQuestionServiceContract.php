@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Services\Contracts;
 
+use EscolaLms\TopicTypeGift\Dtos\AdminSortQuestionDto;
 use EscolaLms\TopicTypeGift\Dtos\GiftQuestionDto;
 use EscolaLms\TopicTypeGift\Exceptions\UnknownGiftTypeException;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
@@ -18,4 +19,5 @@ interface GiftQuestionServiceContract
     public function getType(string $question): string;
     public function getAnswerFromQuestion(string $question): string;
     public function removeComment(string $question): string;
+    public function sort(AdminSortQuestionDto $dto): void;
 }

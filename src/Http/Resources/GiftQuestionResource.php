@@ -25,6 +25,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="number"
  *      ),
  *      @OA\Property(
+ *          property="order",
+ *          description="order",
+ *          type="number"
+ *      ),
+ *      @OA\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -56,6 +61,7 @@ class GiftQuestionResource extends JsonResource
             'id' => $this->id,
             'type' => $this->type,
             'score' => $this->score,
+            'order' => $this->order,
             'title' => $strategy->getTitle(),
             'question' => $strategy->getQuestionForStudent(),
             'options' => $strategy->getOptions(),

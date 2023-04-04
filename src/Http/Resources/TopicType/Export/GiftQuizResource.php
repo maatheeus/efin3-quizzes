@@ -20,7 +20,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'max_execution_time' => $this->max_execution_time,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'questions' => AdminGiftQuestionResource::collection($this->questions),
+            'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),
         ];
     }
 }

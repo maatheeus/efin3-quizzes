@@ -64,7 +64,7 @@ class QuizAttemptResource extends QuizAttemptSimpleResource
     public function toArray($request): array
     {
         return array_merge(parent::toArray($request), [
-            'questions' => GiftQuestionResource::collection($this->giftQuiz->questions->sortBy('id')),
+            'questions' => GiftQuestionResource::collection($this->giftQuiz->questions->sortBy('order')),
             'answers' => AttemptAnswerResource::collection($this->answers),
         ]);
     }

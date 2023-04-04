@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property string $value
  * @property string $type
  * @property int $score
+ * @property int $order
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -32,11 +33,22 @@ class GiftQuestion extends Model
         'value',
         'type',
         'score',
+        'order',
     ];
 
     public function giftQuiz(): BelongsTo
     {
         return $this->belongsTo(GiftQuiz::class, 'topic_gift_quiz_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (GiftQuestion $question) {
+            if (!$question->order) {
+                $question->order = 1 + (int) GiftQuestion::where('topic_gift_quiz_id', $question->topic_gift_quiz_id)
+                        ->max('order');
+            }
+        });
     }
 
     protected static function newFactory(): GiftQuestionFactory

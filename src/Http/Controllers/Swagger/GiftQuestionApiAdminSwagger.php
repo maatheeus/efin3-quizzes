@@ -4,6 +4,7 @@ namespace EscolaLms\TopicTypeGift\Http\Controllers\Swagger;
 
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminCreateGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminDeleteGiftQuestionRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminSortGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateGiftQuestionRequest;
 use Illuminate\Http\JsonResponse;
 
@@ -12,9 +13,9 @@ interface GiftQuestionApiAdminSwagger
     /**
      * @OA\Post(
      *      path="/api/admin/gift-questions",
-     *      summary="Store a newly Qift Question",
+     *      summary="Store a newly Gift Question",
      *      tags={"Admin Gift Question"},
-     *      description="Store Qift Question",
+     *      description="Store Gift Question",
      *      security={
      *          {"passport": {}},
      *      },
@@ -54,9 +55,9 @@ interface GiftQuestionApiAdminSwagger
     /**
      * @OA\Put(
      *      path="/api/admin/gift-questions/{id}",
-     *      summary="Update Qift Question",
+     *      summary="Update Gift Question",
      *      tags={"Admin Gift Question"},
-     *      description="Update Qift Question",
+     *      description="Update Gift Question",
      *      security={
      *          {"passport": {}},
      *      },
@@ -145,4 +146,42 @@ interface GiftQuestionApiAdminSwagger
      * )
      */
     public function delete(AdminDeleteGiftQuestionRequest $request): JsonResponse;
+
+    /**
+     * @OA\Post(
+     *      path="/api/admin/gift-questions/sort",
+     *      summary="Sort Gift Questions",
+     *      tags={"Admin Gift Question"},
+     *      description="Sort Gift Questions",
+     *      security={
+     *          {"passport": {}},
+     *      },
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(ref="#/components/schemas/AdminSortGiftQuestionRequest")
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfull operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="success",
+     *                      type="boolean"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="message",
+     *                      type="string"
+     *                  )
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function sort(AdminSortGiftQuestionRequest $request): JsonResponse;
 }

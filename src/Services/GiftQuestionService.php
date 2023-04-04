@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Services;
 
+use EscolaLms\TopicTypeGift\Dtos\AdminSortQuestionDto;
 use EscolaLms\TopicTypeGift\Dtos\GiftQuestionDto;
 use EscolaLms\TopicTypeGift\Enum\QuestionTypeEnum;
 use EscolaLms\TopicTypeGift\Exceptions\UnknownGiftTypeException;
@@ -98,5 +99,12 @@ class GiftQuestionService implements GiftQuestionServiceContract
     public function removeComment(string $question): string
     {
        return preg_replace('/\/\/.*\n/', '', $question);
+    }
+
+    public function sort(AdminSortQuestionDto $dto): void
+    {
+        foreach ($dto->getOrders() as $oder) {
+            $this->giftQuestionRepository->update(['order' => $oder['order']], $oder['id']);
+        }
     }
 }

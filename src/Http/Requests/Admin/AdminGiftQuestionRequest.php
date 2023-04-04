@@ -27,6 +27,12 @@ use Illuminate\Foundation\Http\FormRequest;
  *          type="number",
  *          example="1"
  *      ),
+ *      @OA\Property(
+ *          property="order",
+ *          description="order",
+ *          type="integer",
+ *          example="1"
+ *      ),
  * )
  *
  */
@@ -38,6 +44,7 @@ class AdminGiftQuestionRequest extends FormRequest
             'topic_gift_quiz_id' => ['required', 'integer', 'exists:topic_gift_quizzes,id'],
             'value' => ['required', 'string'],
             'score' => ['required', 'integer', 'min:1'],
+            'order' => ['nullable', 'integer', 'min:1'],
         ];
     }
 

@@ -34,6 +34,7 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
                 'topic_gift_quiz_id' => $this->quiz->getKey(),
                 'value' => $question->value,
                 'score' => $question->score,
+                'order' => 10,
             ])
             ->assertOk();
 
@@ -42,6 +43,7 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
             'topic_gift_quiz_id' => $this->quiz->getKey(),
             'value' => $question->value,
             'score' => $question->score,
+            'order' => 10,
         ]);
     }
 }
