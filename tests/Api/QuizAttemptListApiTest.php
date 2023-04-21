@@ -3,7 +3,6 @@
 namespace EscolaLms\TopicTypeGift\Tests\Api;
 
 use EscolaLms\Core\Tests\CreatesUsers;
-use EscolaLms\Courses\Database\Seeders\CoursesPermissionSeeder;
 use EscolaLms\TopicTypeGift\Database\Seeders\TopicTypeGiftPermissionSeeder;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
@@ -51,6 +50,50 @@ class QuizAttemptListApiTest extends TestCase
         $this->actingAs($student, 'api')->getJson('api/quiz-attempts?topic_gift_quiz_id=' . $quiz2->getKey())
             ->assertOk()
             ->assertJsonCount(2, 'data');
+    }
+
+    public function testQuizAttemptListFilteringByDate(): void
+    {
+        $student = $this->makeStudent();
+
+        $quiz = GiftQuiz::factory()->create();
+        $quiz2 = GiftQuiz::factory()->create();
+
+        QuizAttempt::factory()
+            ->state(new Sequence(
+                [
+                    'user_id' => $student->getKey(),
+                    'topic_gift_quiz_id' => $quiz->getKey(),
+                    'started_at' => now()->subDays(2),
+                    'end_at' => now()->subDays(1),
+                ],
+                [
+                    'user_id' => $student->getKey(),
+                    'topic_gift_quiz_id' => $quiz2->getKey(),
+                    'started_at' => now()->addDays(1),
+                    'end_at' => now()->addDays(2),
+                ],
+            ))
+            ->count(2)
+            ->create();
+
+        $response = $this->actingAs($student, 'api')->json('GET','api/quiz-attempts', [
+            'date_from' => now()->format('Y-m-d'),
+        ]);
+
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment([
+            'topic_gift_quiz_id' => $quiz2->getKey(),
+        ]);
+
+        $response = $this->actingAs($student, 'api')->json('GET','api/quiz-attempts', [
+            'date_to' => now()->format('Y-m-d'),
+        ]);
+
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonFragment([
+            'topic_gift_quiz_id' => $quiz->getKey(),
+        ]);
     }
 
     public function testQuizAttemptListPagination(): void

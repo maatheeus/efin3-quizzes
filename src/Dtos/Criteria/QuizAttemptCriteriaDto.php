@@ -5,6 +5,7 @@ namespace EscolaLms\TopicTypeGift\Dtos\Criteria;
 use EscolaLms\Core\Dtos\Contracts\DtoContract;
 use EscolaLms\Core\Dtos\Contracts\InstantiateFromRequest;
 use EscolaLms\Core\Dtos\CriteriaDto as BaseCriteriaDto;
+use EscolaLms\Core\Repositories\Criteria\Primitives\DateCriterion;
 use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -22,6 +23,14 @@ class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, Ins
 
         if ($request->get('topic_gift_quiz_id')) {
             $criteria->push(new EqualCriterion('topic_gift_quiz_id', $request->get('topic_gift_quiz_id')));
+        }
+
+        if ($request->get('date_from')) {
+            $criteria->push(new DateCriterion('started_at', $request->get('date_from'), '>='));
+        }
+
+        if ($request->get('date_to')) {
+            $criteria->push(new DateCriterion('end_at', $request->get('date_to'), '<='));
         }
 
         $criteria->push(new OrderCriterion($request->get('order_by') ?? 'id', $request->get('order') ?? 'desc'));
