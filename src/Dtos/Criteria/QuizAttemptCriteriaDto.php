@@ -9,7 +9,6 @@ use EscolaLms\Core\Repositories\Criteria\Primitives\DateCriterion;
 use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use EscolaLms\Courses\Repositories\Criteria\Primitives\OrderCriterion;
 
 class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, InstantiateFromRequest
 {
@@ -32,8 +31,6 @@ class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, Ins
         if ($request->get('date_to')) {
             $criteria->push(new DateCriterion('end_at', $request->get('date_to'), '<='));
         }
-
-        $criteria->push(new OrderCriterion($request->get('order_by') ?? 'id', $request->get('order') ?? 'desc'));
 
         return new static($criteria);
     }

@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Requests;
 
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\PageDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\QuizAttemptCriteriaDto;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
@@ -17,7 +18,10 @@ class ListQuizAttemptRequest extends FormRequest
 
     public function rules(): array
     {
-        return [];
+        return [
+            'order_by' => ['sometimes', 'string', 'in:id,user_id,topic_gift_quiz_id,started_at,end_at,max_score,result_score'],
+            'order' => ['sometimes', 'string', 'in:ASC,DESC'],
+        ];
     }
 
     public function getCriteriaDto(): QuizAttemptCriteriaDto
@@ -28,5 +32,10 @@ class ListQuizAttemptRequest extends FormRequest
     public function getPageDto(): PageDto
     {
         return PageDto::instantiateFromRequest($this);
+    }
+
+    public function getOrderDto(): OrderDto
+    {
+        return OrderDto::instantiateFromRequest($this);
     }
 }

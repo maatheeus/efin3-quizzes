@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Services;
 
+use EscolaLms\Core\Dtos\OrderDto;
 use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\PageDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\QuizAttemptCriteriaDto;
@@ -26,9 +27,9 @@ class QuizAttemptService implements QuizAttemptServiceContract
         $this->attemptRepository = $attemptRepository;
     }
 
-    public function findAll(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto): LengthAwarePaginator
+    public function findAll(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, ?OrderDto $orderDto = null): LengthAwarePaginator
     {
-        return $this->attemptRepository->findByCriteria($criteriaDto->toArray(), $paginationDto->getPerPage());
+        return $this->attemptRepository->findByCriteria($criteriaDto->toArray(), $paginationDto->getPerPage(), $orderDto);
     }
 
     public function findByUser(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, int $userId): LengthAwarePaginator

@@ -22,7 +22,7 @@ class QuizAttemptApiAdminController extends EscolaLmsBaseController implements Q
 
     public function index(AdminListQuizAttemptRequest $request): JsonResponse
     {
-        $result = $this->attemptService->findAll($request->getCriteriaDto(), $request->getPageDto(), auth()->id());
+        $result = $this->attemptService->findAll($request->getCriteriaDto(), $request->getPageDto(), $request->getOrderDto());
 
         return $this->sendResponseForResource(QuizAttemptSimpleResource::collection($result));
     }
