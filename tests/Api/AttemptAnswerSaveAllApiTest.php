@@ -73,4 +73,46 @@ class AttemptAnswerSaveAllApiTest extends TestCase
 
         Bus::assertDispatched(MarkAttemptAsEnded::class);
     }
+
+    public function testSaveAllAttemptAnswersValidationFails(): void
+    {
+        Bus::fake([MarkAttemptAsEnded::class]);
+
+        $question = GiftQuestion::factory()
+            ->state([
+                'value' => 'Grant is buried in Grant\'s tomb.{FALSE}',
+                'type' => QuestionTypeEnum::TRUE_FALSE,
+                'score' => 3,
+            ])
+            ->create();
+
+        $this->actingAs($this->student, 'api')
+            ->postJson('api/quiz-answers/all', [
+                'topic_gift_quiz_attempt_id' => $this->attempt->getKey(),
+                'answers' => [
+                    [
+                        'topic_gift_question_id' => $question->getKey(),
+                        'answer' => [
+                            'key' => 'value',
+                        ],
+                    ],
+                    [
+                        'topic_gift_question_id' => $question->getKey(),
+                        'answer' => [
+                            AnswerKeyEnum::BOOL => false,
+                        ],
+                    ],
+                    [
+                        'topic_gift_question_id' => $question->getKey(),
+                        'answer' => [
+                            'key' => 'value',
+                        ],
+                    ]
+                ],
+            ])
+            ->assertJsonValidationErrors(['answers.0', 'answers.2'])
+            ->assertUnprocessable();
+
+        Bus::assertNotDispatched(MarkAttemptAsEnded::class);
+    }
 }

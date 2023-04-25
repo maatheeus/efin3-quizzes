@@ -2,10 +2,9 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Requests;
 
-use Closure;
 use EscolaLms\TopicTypeGift\Dtos\SaveAllAttemptAnswersDto;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
-use EscolaLms\TopicTypeGift\Rules\AnswerKeyRule;
+use EscolaLms\TopicTypeGift\Rules\ArrayAnswerKeyRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -49,12 +48,7 @@ class SaveAllAttemptAnswersRequest extends FormRequest
         return [
             'topic_gift_quiz_attempt_id' => ['required', 'integer', 'exists:topic_gift_quiz_attempts,id'],
             'answers' => ['required', 'array'],
-            'answers.*' => ['required', function (string $attribute, array $value, Closure $fail) {
-                $rule = new AnswerKeyRule($value['topic_gift_question_id']);
-                if (!$rule->passes($attribute, $value['answer'])) {
-                    $fail($rule->message());
-                }
-            }],
+            'answers.*' => ['required', new ArrayAnswerKeyRule($this->get('answers'))],
             'answers.*.answer.text' => ['sometimes', 'string'],
             'answers.*.answer.matching' => ['sometimes', 'array'],
             'answers.*.answer.multiple' => ['sometimes', 'array'],
