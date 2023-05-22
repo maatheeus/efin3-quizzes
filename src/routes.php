@@ -3,6 +3,7 @@
 use EscolaLms\TopicTypeGift\Http\Controllers\AttemptAnswerApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\AttemptAnswerApiController;
 use EscolaLms\TopicTypeGift\Http\Controllers\GiftQuestionApiAdminController;
+use EscolaLms\TopicTypeGift\Http\Controllers\GiftQuizApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\QuizAttemptApiAdminController;
 use EscolaLms\TopicTypeGift\Http\Controllers\QuizAttemptApiController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,9 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::patch('{id}', [AttemptAnswerApiAdminController::class, 'update']);
         });
 
+        Route::prefix('gift-quizes')->group(function () {
+            Route::get('{id}', [GiftQuizApiAdminController::class, 'read']);
+        });
     });
 
     Route::prefix('quiz-attempts')->group(function () {
@@ -38,4 +42,5 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
         Route::post(null, [AttemptAnswerApiController::class, 'saveAnswer']);
         Route::post('all', [AttemptAnswerApiController::class, 'saveAllAnswers']);
     });
+
 });
