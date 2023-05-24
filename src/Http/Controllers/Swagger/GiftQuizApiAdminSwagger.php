@@ -9,7 +9,7 @@ interface GiftQuizApiAdminSwagger
 {
     /**
      * @OA\Get(
-     *     path="/api/gift-quizes/{id}",
+     *     path="/api/admin/gift-quizes/{id}",
      *     summary="Get gift quiz by id",
      *      tags={"Gift Quiz"},
      *     security={

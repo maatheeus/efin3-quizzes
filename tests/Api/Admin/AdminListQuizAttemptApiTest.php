@@ -74,6 +74,7 @@ class AdminListQuizAttemptApiTest extends TestCase
                 'user_id' => $student->getKey(),
                 'topic_gift_quiz_id' => $quiz1->getKey(),
                 'end_at' => now()->subDays(5),
+                'created_at' => now()->subDays(1),
             ]);
         AttemptAnswer::factory()->create([
             'topic_gift_quiz_attempt_id' => $attempt1->getKey(),
@@ -102,6 +103,7 @@ class AdminListQuizAttemptApiTest extends TestCase
                 'user_id' => $student->getKey(),
                 'topic_gift_quiz_id' => $quiz2->getKey(),
                 'end_at' => now()->subDays(5),
+                'created_at' => now(),
             ]);
 
         AttemptAnswer::factory()->create([
@@ -115,6 +117,22 @@ class AdminListQuizAttemptApiTest extends TestCase
             'topic_gift_question_id' => $question2->getKey(),
             'score' => 6,
         ]);
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'created_at',
+            'order' => 'DESC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $attempt2->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt1->getKey());
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'created_at',
+            'order' => 'ASC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $attempt1->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt2->getKey());
 
         $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
             'order_by' => 'result_score',
