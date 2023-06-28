@@ -6,6 +6,7 @@
         "php": "^7.4|^8.0|^8.1",
         "escolalms/auth": "^0",
         "escolalms/core": "^1",
+        "escolalms/categories": "^0",
         "laravel/framework": "^8|^9",
         "escolalms/topic-types": "^0",
         "escolalms/settings": "^0"

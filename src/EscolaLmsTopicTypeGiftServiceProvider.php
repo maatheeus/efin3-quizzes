@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift;
 
+use EscolaLms\Categories\EscolaLmsCategoriesServiceProvider;
 use EscolaLms\Courses\EscolaLmsCourseServiceProvider;
 use EscolaLms\Courses\Facades\Topic;
 use EscolaLms\TopicTypeGift\Http\Resources\TopicType\Admin\GiftQuizResource as AdminGiftQuizResource;
@@ -63,5 +64,6 @@ class EscolaLmsTopicTypeGiftServiceProvider extends ServiceProvider
         $this->app->register(EscolaLmsTopicTypesServiceProvider::class);
         $this->app->register(EscolaLmsCourseServiceProvider::class);
         $this->app->register(SettingsServiceProvider::class);
+        $this->app->register(EscolaLmsCategoriesServiceProvider::class);
     }
 }

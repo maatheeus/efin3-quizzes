@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Tests\Api\Admin;
 
+use EscolaLms\Categories\Models\Category;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Tests\Api\GiftQuestionTestCase;
 
@@ -28,6 +29,7 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
     public function testAdminUpdateGiftQuestion(): void
     {
         $question = GiftQuestion::factory()->make();
+        $category = Category::factory()->create();
 
         $this->actingAs($this->admin, 'api')
             ->putJson('api/admin/gift-questions/' . $this->question->getKey(), [
@@ -35,6 +37,7 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
                 'value' => $question->value,
                 'score' => $question->score,
                 'order' => 10,
+                'category_id' => $category->getKey(),
             ])
             ->assertOk();
 
@@ -44,6 +47,7 @@ class AdminUpdateGiftQuestionTest extends GiftQuestionTestCase
             'value' => $question->value,
             'score' => $question->score,
             'order' => 10,
+            'category_id' => $category->getKey(),
         ]);
     }
 }

@@ -33,6 +33,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="order",
  *          type="number"
  *      ),
+ *      @OA\Property(
+ *          property="category_id",
+ *          description="category_id",
+ *          type="integer"
+ *      ),
  * )
  *
  */
@@ -50,6 +55,7 @@ class AdminGiftQuestionResource extends JsonResource
             'type' => $this->type,
             'score' => $this->score,
             'order' => $this->order,
+            'category_id' => $this->category_id,
         ];
     }
 }

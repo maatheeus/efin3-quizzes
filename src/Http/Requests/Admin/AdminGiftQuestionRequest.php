@@ -33,6 +33,12 @@ use Illuminate\Foundation\Http\FormRequest;
  *          type="integer",
  *          example="1"
  *      ),
+ *      @OA\Property(
+ *          property="category_id",
+ *          description="category_id",
+ *          type="integer",
+ *          example="1"
+ *      ),
  * )
  *
  */
@@ -45,6 +51,7 @@ class AdminGiftQuestionRequest extends FormRequest
             'value' => ['required', 'string'],
             'score' => ['required', 'integer', 'min:1'],
             'order' => ['nullable', 'integer', 'min:1'],
+            'category_id' => ['nullable', 'integer', 'exists:categories,id'],
         ];
     }
 

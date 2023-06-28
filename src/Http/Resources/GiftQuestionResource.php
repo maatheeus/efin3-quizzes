@@ -30,6 +30,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="number"
  *      ),
  *      @OA\Property(
+ *          property="category_id",
+ *          description="category_id",
+ *          type="integer"
+ *      ),
+ *      @OA\Property(
  *          property="title",
  *          description="title",
  *          type="string"
@@ -62,6 +67,7 @@ class GiftQuestionResource extends JsonResource
             'type' => $this->type,
             'score' => $this->score,
             'order' => $this->order,
+            'category_id' => $this->category_id,
             'title' => $strategy->getTitle(),
             'question' => $strategy->getQuestionForStudent(),
             'options' => $strategy->getOptions(),

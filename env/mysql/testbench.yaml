@@ -16,3 +16,4 @@ providers:
   - EscolaLms\TopicTypes\EscolaLmsTopicTypesServiceProvider
   - EscolaLms\TopicTypeGift\EscolaLmsTopicTypeGiftServiceProvider
   - EscolaLms\Settings\EscolaLmsSettingsServiceProvider
+  - EscolaLms\Categories\EscolaLmsCategoriesServiceProvider
