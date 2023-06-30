@@ -46,8 +46,13 @@ class AdminSortGiftQuestionRequest extends FormRequest
     {
         $questions = $this->getQuestions();
         $quizId = $questions->pluck('topic_gift_quiz_id')->unique();
+        $quiz = GiftQuiz::findOrFail($quizId)->first();
 
-        return $quizId->count() === 1 && Gate::allows('update', GiftQuiz::findOrFail($quizId)->first()->topic);
+        if ($quiz->topic && !Gate::allows('update', $quiz->topic)) {
+            return false;
+        }
+
+        return $quizId->count() === 1;
     }
 
     public function rules(): array

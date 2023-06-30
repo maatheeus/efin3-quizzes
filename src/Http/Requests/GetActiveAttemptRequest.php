@@ -4,7 +4,7 @@ namespace EscolaLms\TopicTypeGift\Http\Requests;
 
 use EscolaLms\Courses\Models\Topic;
 use EscolaLms\TopicTypeGift\Dtos\QuizAttemptDto;
-use EscolaLms\TopicTypeGift\Enum\TopicTypeGiftProjectPermissionEnum;
+use EscolaLms\TopicTypeGift\Enum\TopicTypeGiftPermissionEnum;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,8 +26,11 @@ class GetActiveAttemptRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Gate::allows('createOwn', QuizAttempt::class)
-            && Gate::allows('attend', $this->getTopic());
+        if ($this->getTopic() && !Gate::allows('attend', $this->getTopic())) {
+            return false;
+        }
+
+        return Gate::allows('createOwn', QuizAttempt::class);
     }
 
     public function rules(): array
@@ -42,7 +45,7 @@ class GetActiveAttemptRequest extends FormRequest
         return QuizAttemptDto::instantiateFromRequest($this);
     }
 
-    public function getTopic(): Topic
+    public function getTopic(): ?Topic
     {
         return GiftQuiz::findOrFail($this->get('topic_gift_quiz_id'))->topic;
     }

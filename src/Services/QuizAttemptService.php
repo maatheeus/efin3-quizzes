@@ -7,6 +7,7 @@ use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\PageDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\QuizAttemptCriteriaDto;
 use EscolaLms\TopicTypeGift\Dtos\QuizAttemptDto;
+use EscolaLms\TopicTypeGift\Events\QuizAttemptStartedEvent;
 use EscolaLms\TopicTypeGift\Exceptions\TooManyAttemptsException;
 use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
@@ -71,6 +72,7 @@ class QuizAttemptService implements QuizAttemptServiceContract
                 : Carbon::now()->addMinutes(Config::get(SettingsServiceProvider::KEY . 'max_quiz_time', 120)),
         ]));
 
+        event(new QuizAttemptStartedEvent($attempt->user, $attempt));
         MarkAttemptAsEnded::dispatch($attempt->getKey())->delay($attempt->end_at);
 
         return $attempt;
