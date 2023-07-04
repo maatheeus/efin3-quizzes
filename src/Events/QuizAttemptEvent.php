@@ -11,8 +11,8 @@ abstract class QuizAttemptEvent
 {
     use Dispatchable, SerializesModels;
 
-    private User $user;
-    private QuizAttempt $attempt;
+    public User $user;
+    public QuizAttempt $attempt;
 
     public function __construct(User $user, QuizAttempt $attempt)
     {
