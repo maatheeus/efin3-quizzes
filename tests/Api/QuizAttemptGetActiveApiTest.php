@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Tests\Api;
 
 use EscolaLms\Core\Tests\CreatesUsers;
+use EscolaLms\TopicTypeGift\Events\QuizAttemptStartedEvent;
 use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
@@ -10,6 +11,7 @@ use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 
 class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
@@ -35,6 +37,7 @@ class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
 
     public function testCreateNewQuizAttempt(): void
     {
+        Event::fake([QuizAttemptStartedEvent::class]);
         Queue::fake();
 
         $student = $this->makeStudent();
@@ -57,6 +60,8 @@ class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
             $this->assertEquals($attempt->end_at->format('Y-m-d H:i'), $job->delay->format('Y-m-d H:i'));
             return true;
         });
+
+        Event::assertDispatched(QuizAttemptStartedEvent::class);
     }
 
     public function testShouldNotCreateQuizAttemptWhenMaxNumberIsExceeded(): void

@@ -60,7 +60,7 @@ class AdminGiftQuestionRequest extends FormRequest
         return GiftQuestionDto::instantiateFromRequest($this);
     }
 
-    public function getTopic(): Topic
+    public function getTopic(): ?Topic
     {
         return GiftQuiz::findOrFail($this->get('topic_gift_quiz_id'))->topic;
     }

@@ -3,7 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Policies;
 
 use EscolaLms\Auth\Models\User;
-use EscolaLms\TopicTypeGift\Enum\TopicTypeGiftProjectPermissionEnum;
+use EscolaLms\TopicTypeGift\Enum\TopicTypeGiftPermissionEnum;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Carbon;
@@ -14,18 +14,18 @@ class QuizAttemptPolicy
 
     public function createOwn(User $user): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::CREATE_OWN_QUIZ_ATTEMPT);
+        return $user->can(TopicTypeGiftPermissionEnum::CREATE_OWN_QUIZ_ATTEMPT);
     }
 
     public function readOwn(User $user, QuizAttempt $attempt): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::READ_OWN_QUIZ_ATTEMPT)
+        return $user->can(TopicTypeGiftPermissionEnum::READ_OWN_QUIZ_ATTEMPT)
             && $attempt->user_id === $user->getKey();
     }
 
     public function listOwn(User $user): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::LIST_OWN_QUIZ_ATTEMPT);
+        return $user->can(TopicTypeGiftPermissionEnum::LIST_OWN_QUIZ_ATTEMPT);
     }
 
     public function addAnswerOwn(User $user, QuizAttempt $attempt): bool
@@ -36,16 +36,16 @@ class QuizAttemptPolicy
 
     public function read(User $user, QuizAttempt $attempt): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::READ_QUIZ_ATTEMPT);
+        return $user->can(TopicTypeGiftPermissionEnum::READ_QUIZ_ATTEMPT);
     }
 
     public function update(User $user, QuizAttempt $attempt): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::UPDATE_QUIZ_ATTEMPT);
+        return $user->can(TopicTypeGiftPermissionEnum::UPDATE_QUIZ_ATTEMPT);
     }
 
     public function list(User $user): bool
     {
-        return $user->can(TopicTypeGiftProjectPermissionEnum::LIST_QUIZ_ATTEMPT);
+        return $user->can(TopicTypeGiftPermissionEnum::LIST_QUIZ_ATTEMPT);
     }
 }
