@@ -15,13 +15,17 @@ use EscolaLms\TopicTypeGift\Repositories\AttemptAnswerRepository;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\AttemptAnswerRepositoryContract;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuestionRepositoryContract;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\QuizAttemptRepositoryContract;
+use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuizRepositoryContract;
 use EscolaLms\TopicTypeGift\Repositories\GiftQuestionRepository;
 use EscolaLms\TopicTypeGift\Repositories\QuizAttemptRepository;
+use EscolaLms\TopicTypeGift\Repositories\GiftQuizRepository;
 use EscolaLms\TopicTypeGift\Services\AttemptAnswerService;
 use EscolaLms\TopicTypeGift\Services\Contracts\AttemptAnswerServiceContract;
 use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuestionServiceContract;
+use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuizServiceContract;
 use EscolaLms\TopicTypeGift\Services\Contracts\QuizAttemptServiceContract;
 use EscolaLms\TopicTypeGift\Services\GiftQuestionService;
+use EscolaLms\TopicTypeGift\Services\GiftQuizService;
 use EscolaLms\TopicTypeGift\Services\QuizAttemptService;
 use EscolaLms\TopicTypes\EscolaLmsTopicTypesServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -35,12 +39,14 @@ class EscolaLmsTopicTypeGiftServiceProvider extends ServiceProvider
         GiftQuestionServiceContract::class => GiftQuestionService::class,
         QuizAttemptServiceContract::class => QuizAttemptService::class,
         AttemptAnswerServiceContract::class => AttemptAnswerService::class,
+        GiftQuizServiceContract::class => GiftQuizService::class,
     ];
 
     public const REPOSITORIES = [
         GiftQuestionRepositoryContract::class => GiftQuestionRepository::class,
         QuizAttemptRepositoryContract::class => QuizAttemptRepository::class,
         AttemptAnswerRepositoryContract::class => AttemptAnswerRepository::class,
+        GiftQuizRepositoryContract::class => GiftQuizRepository::class,
     ];
 
     public $singletons = self::SERVICES + self::REPOSITORIES;

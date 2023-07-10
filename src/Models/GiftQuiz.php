@@ -34,6 +34,11 @@ use Illuminate\Support\Carbon;
  *          property="max_execution_time",
  *          description="max execution time in minutes",
  *          type="number"
+ *      ),
+ *      @OA\Property(
+ *          property="min_pass_score",
+ *          description="minimum score to pass the quiz",
+ *          type="number"
  *      )
  * )
  */
@@ -45,6 +50,7 @@ use Illuminate\Support\Carbon;
  * @property string $value
  * @property ?integer $max_attempts
  * @property ?integer $max_execution_time
+ * @property ?double $min_pass_score
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -60,6 +66,7 @@ class GiftQuiz extends AbstractTopicContent
         'value',
         'max_attempts',
         'max_execution_time',
+        'min_pass_score',
     ];
 
     protected $casts = [
@@ -67,6 +74,7 @@ class GiftQuiz extends AbstractTopicContent
         'value' => 'string',
         'max_attempts' => 'integer',
         'max_execution_time' => 'integer',
+        'min_pass_score' => 'double',
     ];
 
     public static function rules(): array
@@ -75,6 +83,7 @@ class GiftQuiz extends AbstractTopicContent
             'value' => ['required', 'string'],
             'max_attempts' => ['nullable', 'integer', 'min:1'],
             'max_execution_time' => ['nullable', 'integer', 'min:1'],
+            'min_pass_score' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 

@@ -16,6 +16,7 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
     public const UPDATE_QUIZ_ATTEMPT = 'quiz-attempt_update';
 
     public const READ_GIFT_QUIZ = 'gift-quiz_read';
+    public const UPDATE_GIFT_QUIZ = 'gift-quiz_update';
     public const CREATE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_create';
     public const UPDATE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_update';
     public const DELETE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_delete';
@@ -32,8 +33,10 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
     public static function tutorPermissions(): array
     {
         return [
-            TopicTypeGiftPermissionEnum::CREATE_GIFT_QUIZ_QUESTION,
+            TopicTypeGiftPermissionEnum::READ_GIFT_QUIZ,
+            TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ,
             TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ_QUESTION,
+            TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
             TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
         ];
     }

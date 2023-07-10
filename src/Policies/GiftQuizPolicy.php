@@ -17,4 +17,8 @@ class GiftQuizPolicy
         return $user->can(TopicTypeGiftPermissionEnum::READ_GIFT_QUIZ);
     }
 
+    public function update(User $user, GiftQuiz $giftQuiz): bool
+    {
+        return $user->can(TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ);
+    }
 }

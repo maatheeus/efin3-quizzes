@@ -39,7 +39,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          property="is_ended",
  *          description="is_ended",
  *          type="boolean"
- *      )
+ *      ),
+ *      @OA\Property(
+ *          property="min_pass_score",
+ *          description="min pass score",
+ *          type="number"
+ *      ),
  * )
  *
  */
@@ -61,6 +66,7 @@ class QuizAttemptSimpleResource extends JsonResource
             'started_at' => $this->started_at,
             'end_at' => $this->end_at,
             'max_score' => $maxScore,
+            'min_pass_score' => $this->giftQuiz->min_pass_score,
             'result_score' => $this->isEnded() ? $resultScore : null,
             'is_ended' => $this->isEnded(),
         ];

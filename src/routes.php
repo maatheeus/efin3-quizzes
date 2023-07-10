@@ -28,6 +28,7 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
 
         Route::prefix('gift-quizes')->group(function () {
             Route::get('{id}', [GiftQuizApiAdminController::class, 'read']);
+            Route::put('{id}', [GiftQuizApiAdminController::class, 'update']);
         });
     });
 

@@ -44,6 +44,7 @@ class AdminReadQuizAttemptApiTest extends TestCase
                     'started_at',
                     'end_at',
                     'max_score',
+                    'min_pass_score',
                     'result_score',
                     'answers',
                 ],
