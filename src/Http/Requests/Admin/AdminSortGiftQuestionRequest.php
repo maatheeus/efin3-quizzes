@@ -16,26 +16,20 @@ use Illuminate\Support\Facades\Gate;
  *          property="orders",
  *          description="orders",
  *          type="array",
- *           @OA\Items(
- *              ref="#/components/schemas/AdminSortGiftQuestion"
- *          )
- *      )
- * )
- *
- */
-
-/**
- * @OA\Schema(
- *      schema="AdminSortGiftQuestion",
- *      @OA\Property(
- *          property="id",
- *          description="id",
- *          type="integer"
- *      ),
- *      @OA\Property(
- *          property="order",
- *          description="order",
- *          type="integer"
+ *          @OA\Items(
+ *              @OA\Schema(
+ *                  @OA\Property(
+ *                      property="id",
+ *                      description="id",
+ *                      type="integer"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="order",
+ *                      description="order",
+ *                      type="integer"
+ *                  )
+ *              )
+ *         )
  *      )
  * )
  *

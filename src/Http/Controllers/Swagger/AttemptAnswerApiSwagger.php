@@ -76,7 +76,7 @@ interface AttemptAnswerApiSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/QuizAttemptSimpleResource"
+     *                      @OA\Schema(ref="#/components/schemas/QuizAttemptSimpleResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",

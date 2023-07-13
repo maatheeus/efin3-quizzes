@@ -39,7 +39,7 @@ interface GiftQuestionApiAdminSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/AdminGiftQuestionResource"
+     *                      @OA\Schema(ref="#/components/schemas/AdminGiftQuestionResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",
@@ -90,7 +90,7 @@ interface GiftQuestionApiAdminSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/AdminGiftQuestionResource"
+     *                      @OA\Schema(ref="#/components/schemas/AdminGiftQuestionResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",

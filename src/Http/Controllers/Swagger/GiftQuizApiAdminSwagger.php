@@ -37,7 +37,7 @@ interface GiftQuizApiAdminSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/AdminGiftQuizResource"
+     *                      @OA\Schema(ref="#/components/schemas/AdminGiftQuizResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",
@@ -86,7 +86,7 @@ interface GiftQuizApiAdminSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/AdminGiftQuizResource"
+     *                      @OA\Schema(ref="#/components/schemas/AdminGiftQuizResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",
