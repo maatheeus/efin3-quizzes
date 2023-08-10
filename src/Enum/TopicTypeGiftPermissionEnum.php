@@ -20,6 +20,8 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
     public const CREATE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_create';
     public const UPDATE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_update';
     public const DELETE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_delete';
+    public const EXPORT_GIFT_QUIZ_QUESTION = 'gift-quiz-question_export';
+    public const IMPORT_GIFT_QUIZ_QUESTION = 'gift-quiz-question_import';
 
     public static function studentPermissions():array
     {

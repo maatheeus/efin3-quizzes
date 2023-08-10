@@ -2,15 +2,22 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Controllers;
 
+use Carbon\Carbon;
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
+use EscolaLms\TopicTypeGift\Export\QuestionExport;
 use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\GiftQuestionApiAdminSwagger;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminCreateGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminDeleteGiftQuestionRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminExportGiftQuestionsRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminImportGiftQuestionsRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminSortGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateGiftQuestionRequest;
 use EscolaLms\TopicTypeGift\Http\Resources\AdminGiftQuestionResource;
+use EscolaLms\TopicTypeGift\Import\QuestionImport;
 use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuestionServiceContract;
 use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class GiftQuestionApiAdminController extends EscolaLmsBaseController implements GiftQuestionApiAdminSwagger
 {
@@ -47,5 +54,21 @@ class GiftQuestionApiAdminController extends EscolaLmsBaseController implements 
         $this->giftQuestionService->sort($request->toDto());
 
         return $this->sendSuccess(__('Gift questions sorted successfully.'));
+    }
+
+    public function export(AdminExportGiftQuestionsRequest $request): BinaryFileResponse
+    {
+        return Excel::download(
+            new QuestionExport($request->toDto()),
+            'questions.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
+    }
+
+    public function import(AdminImportGiftQuestionsRequest $request): JsonResponse
+    {
+        Excel::import(new QuestionImport($request->getQuizId()), $request->getFile());
+
+        return $this->sendSuccess(__('Gift questions imported successfully.'));
     }
 }

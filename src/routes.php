@@ -15,6 +15,8 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::delete('{id}', [GiftQuestionApiAdminController::class, 'delete']);
             Route::put('{id}', [GiftQuestionApiAdminController::class, 'update']);
             Route::post('sort', [GiftQuestionApiAdminController::class, 'sort']);
+            Route::get('export', [GiftQuestionApiAdminController::class, 'export']);
+            Route::post('import', [GiftQuestionApiAdminController::class, 'import']);
         });
 
         Route::prefix('quiz-attempts')->group(function () {
