@@ -32,8 +32,9 @@ abstract class QuestionStrategy implements QuestionStrategyContract
     {
         $question = trim(preg_replace('/::.*?::/', '', $this->questionPlainText));
         $replacement = Str::endsWith($question, ['}']) ? '' : ' _____ ';
+        $question = trim(preg_replace('/\s*\{.*?\}\s*/s', $replacement, $question));
 
-        return trim(preg_replace('/\s*\{.*?\}\s*/s', $replacement, $question));
+        return $this->removeBackslashBeforeSpecialCharacters($question);
     }
 
     public function getOptions(): array
@@ -44,5 +45,30 @@ abstract class QuestionStrategy implements QuestionStrategyContract
     protected function removeFeedbackFromAnswer(string $answer): string
     {
         return trim(preg_replace('/#.*$/', '', trim($answer)));
+    }
+
+    protected function removeBackslashBeforeSpecialCharacters(string $text): string
+    {
+        return trim(preg_replace('/\\\\([~=#\{\}:?])/', '$1', $text));
+    }
+
+    protected function escapedcharPre(string $text)
+    {
+        $escapedcharacters = ['\\:', '\\#', '\\=', '\\{', '\\}', '\\~', '\\n'];
+        $placeholders = ['&&058;', '&&035;', '&&061;', '&&123;', '&&125;', '&&126;', '&&010'];
+
+        $text = str_replace("\\\\", "&&092;", $text);
+        $text = str_replace($escapedcharacters, $placeholders, $text);
+        $text = str_replace("&&092;", "\\", $text);
+
+        return $text;
+    }
+
+    protected function escapedcharPost(string $text)
+    {
+        $placeholders = ['&&058;', '&&035;', '&&061;', '&&123;', '&&125;', '&&126;', '&&010'];
+        $characters   = [':', '#', '=', '{', '}', '~', '\n'];
+
+        return str_replace($placeholders, $characters, $text);
     }
 }

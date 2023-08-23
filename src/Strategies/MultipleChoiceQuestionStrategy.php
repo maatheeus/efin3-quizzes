@@ -10,12 +10,15 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
 {
     public function getOptions(): array
     {
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
+        $escapedQuestion = $this->escapedcharPre($this->questionPlainText);
+        $answerBlock = $this->service->getAnswerFromQuestion($escapedQuestion);
         $answers = preg_split('/\s*[=~]\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
 
         return [
             'answers' => collect($answers)
-                ->map(fn($answer) => $this->removeFeedbackFromAnswer($answer))->toArray(),
+                ->map(fn(string $answer) => $this->escapedcharPost($answer))
+                ->map(fn(string $answer) => $this->removeFeedbackFromAnswer($answer))
+                ->toArray(),
         ];
     }
 
@@ -34,10 +37,13 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
 
     public function getCorrectAnswer(): string
     {
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
+        $escapedQuestion = $this->escapedcharPre($this->questionPlainText);
+        $answerBlock = $this->service->getAnswerFromQuestion($escapedQuestion);
 
         if (preg_match('/=([^~]*)/', $answerBlock, $matches)) {
-            return $this->removeFeedbackFromAnswer($matches[1]);
+            $correctAnswer = $this->escapedcharPost($matches[1]);
+
+            return $this->removeFeedbackFromAnswer($correctAnswer);
         }
 
         return '';

@@ -13,12 +13,16 @@ class ShortAnswerQuestionStrategy extends QuestionStrategy
         $answer = $answer[$this->getAnswerKey()];
         $result = new CheckAnswerDto();
 
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
+        $escapedQuestion = $this->escapedcharPre($this->questionPlainText);
+        $answerBlock = $this->service->getAnswerFromQuestion($escapedQuestion);
         $allAnswers = preg_split('/\s*=\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
 
         $allCorrectAnswers = collect($allAnswers)->map(function ($answer) {
+            $value = trim(Str::beforeLast(Str::afterLast($answer, '%'), '#'));
+            $value = $this->escapedcharPost($value);
+
             return [
-                'value' => trim(Str::beforeLast(Str::afterLast($answer, '%'), '#')),
+                'value' => $value,
                 'feedback' => Str::contains($answer, '#') ? Str::after( $answer, '#') : '',
                 'percent' => Str::contains($answer, '%') ? (float) Str::between($answer, '%', '%') : 100,
             ];

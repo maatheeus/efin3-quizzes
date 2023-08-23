@@ -41,10 +41,12 @@ class MatchingQuestionStrategy extends QuestionStrategy
 
     private function getCorrectAnswers(): Collection
     {
-        $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
+        $escapedQuestion = $this->escapedcharPre($this->questionPlainText);
+        $answerBlock = $this->service->getAnswerFromQuestion($escapedQuestion);
         $answers = preg_split('/\s*=\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
 
         return collect($answers)
+            ->map(fn($answer) => $this->escapedcharPost($answer))
             ->map(fn($answer) => $this->removeFeedbackFromAnswer($answer))
             ->map(fn($answer) => explode('->', $answer))
             ->map(fn($answer) => [trim($answer[0]), trim($answer[1])]);

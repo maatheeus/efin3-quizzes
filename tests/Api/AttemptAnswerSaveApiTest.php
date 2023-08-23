@@ -72,6 +72,44 @@ class AttemptAnswerSaveApiTest extends TestCase
     {
         return [
             [
+                'question' => 'Two plus two {=\= four =\= 4}',
+                'type' => QuestionTypeEnum::SHORT_ANSWERS,
+                'answer' => [AnswerKeyEnum::TEXT => '= four'],
+            ],
+            [
+                'question' => 'Match the following countries with their corresponding capitals. {
+                               =\=Canada -> Ottawa
+                               =\=Italy  -> Rome
+                               =\=Japan  -> Tokyo
+                               =\=India  -> New Delhi
+                               }',
+                'type' => QuestionTypeEnum::MATCHING,
+                'answer' => [AnswerKeyEnum::MATCHING => [
+                    '=Canada' => 'Ottawa',
+                    '=Italy' => 'Rome',
+                    '=Japan' => 'Tokyo',
+                    '=India' => 'New Delhi',
+                ]],
+            ],
+            [
+                'question' => 'Which answer equals 5\? {
+                                ~%50%\= 3 + 2
+                                ~%50%\= 2 + 3
+                                ~%-100%\= 2 + 4
+                            }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'answer' => [AnswerKeyEnum::MULTIPLE => ['= 3 + 2', '= 2 + 3']],
+            ],
+            [
+                'question' => 'Which answer equals 5\? {
+                                ~ \= 2 + 2
+                                = \= 2 + 3
+                                ~ \= 2 + 4
+                            }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'answer' => [AnswerKeyEnum::TEXT => '= 2 + 3'],
+            ],
+            [
                 'question' => 'Who\'s buried in Grant\'s tomb?{~no one ~Napoleon =Grant ~Churchill ~Mother Teresa }',
                 'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
                 'answer' => [AnswerKeyEnum::TEXT => 'Grant'],

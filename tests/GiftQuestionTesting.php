@@ -10,7 +10,66 @@ trait GiftQuestionTesting
     {
         return [
             [
-                'question' => 'Who\'s buried in Grant\'s tomb?{=Grant ~no one ~Napoleon ~Churchill ~Mother Teresa }',
+                'question' => 'Match the following countries with their corresponding capitals. {
+                               =\=Canada -> Ottawa
+                               =\=Italy  -> Rome
+                               =\=Japan  -> Tokyo
+                               =\=India  -> New Delhi
+                               }',
+                'type' => QuestionTypeEnum::MATCHING,
+                'title' => '',
+                'questionForStudent' => 'Match the following countries with their corresponding capitals.',
+                'options' => [
+                    'sub_questions' => [
+                        '=Japan',
+                        '=India',
+                        '=Canada',
+                        '=Italy',
+                    ],
+                    'sub_answers' => [
+                        'New Delhi',
+                        'Ottawa',
+                        'Rome',
+                        'Tokyo',
+                    ],
+                ],
+            ],
+            [
+                'question' => 'Which answer equals 5\? {
+                                ~%50%\= 3 + 2
+                                ~%50%\= 2 + 3
+                                ~%-100%\= 2 + 4
+                            }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'title' => '',
+                'questionForStudent' => 'Which answer equals 5?',
+                'options' => [
+                    'answers' => [
+                        '= 3 + 2',
+                        '= 2 + 3',
+                        '= 2 + 4',
+                    ],
+                ]
+            ],
+            [
+                'question' => 'Which answer equals 5\? {
+                                ~ \= 2 + 2
+                                = \= 2 + 3
+                                ~ \= 2 + 4
+                            }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'title' => '',
+                'questionForStudent' => 'Which answer equals 5?',
+                'options' => [
+                    'answers' => [
+                        '= 2 + 2',
+                        '= 2 + 3',
+                        '= 2 + 4',
+                    ],
+                ]
+            ],
+            [
+                'question' => 'Who\'s buried in Grant\'s tomb\?{=Grant ~no one ~Napoleon ~Churchill ~Mother Teresa }',
                 'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
                 'title' => '',
                 'questionForStudent' => 'Who\'s buried in Grant\'s tomb?',

@@ -47,12 +47,16 @@ class MultipleChoiceWithMultipleAnswersQuestionStrategy extends QuestionStrategy
     {
         $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
         $answerBlock = preg_replace('/\s+/', ' ', $answerBlock);
+        $answerBlock = $this->escapedcharPre($answerBlock);
         preg_match_all('/[~=][^~=]*/', $answerBlock, $matches);
         $allAnswers = $matches[0];
 
         return collect($allAnswers)->map(function ($answer) {
+            $value = trim(Str::before(preg_replace('/%.*%/', '', substr($answer, 1)), '#'));
+            $value = $this->escapedcharPost($value);
+
             return [
-                'value' => trim(Str::before(preg_replace('/%.*%/', '', substr($answer, 1)), '#')),
+                'value' => $value,
                 'feedback' => Str::contains($answer, '#') ? Str::after($answer, '#') : '',
                 'percent' => Str::startsWith($answer, '=') ? 100 : (float) Str::between($answer, '%', '%'),
             ];
