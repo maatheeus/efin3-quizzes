@@ -41,6 +41,14 @@ interface QuizAttemptApiAdminSwagger
      *          ),
      *      ),
      *     @OA\Parameter(
+     *          name="course_id",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="number",
+     *          ),
+     *      ),
+     *     @OA\Parameter(
      *          name="user_id",
      *          required=false,
      *          in="query",
@@ -62,7 +70,7 @@ interface QuizAttemptApiAdminSwagger
      *                  @OA\Property(
      *                      property="data",
      *                      type="array",
-     *                      @OA\Items(@OA\Schema(ref="#/components/schemas/QuizAttemptSimpleResource"))
+     *                      @OA\Items(ref="#/components/schemas/QuizAttemptSimpleResource")
      *                  ),
      *                  @OA\Property(
      *                      property="message",

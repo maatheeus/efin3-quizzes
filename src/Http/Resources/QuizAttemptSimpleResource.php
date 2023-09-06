@@ -45,6 +45,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="min pass score",
  *          type="number"
  *      ),
+ *     @OA\Property(
+ *          property="user",
+ *          description="user",
+ *          type="object"
+ *      ),
+ *     @OA\Property(
+ *          property="course",
+ *          description="course",
+ *          type="object"
+ *      ),
  * )
  *
  */
@@ -58,6 +68,7 @@ class QuizAttemptSimpleResource extends JsonResource
     {
         $maxScore = $this->giftQuiz->questions->sum('score');
         $resultScore = $this->answers->sum('score');
+        $course = $this->giftQuiz?->topic?->lesson?->course;
 
         return [
             'id' => $this->id,
@@ -69,6 +80,8 @@ class QuizAttemptSimpleResource extends JsonResource
             'min_pass_score' => $this->giftQuiz->min_pass_score,
             'result_score' => $this->isEnded() ? $resultScore : null,
             'is_ended' => $this->isEnded(),
+            'user' => UserSimpleResource::make($this->user),
+            'course' => $course ? CourseSimpleResource::make($course) : null,
         ];
     }
 }

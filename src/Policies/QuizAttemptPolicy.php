@@ -46,6 +46,9 @@ class QuizAttemptPolicy
 
     public function list(User $user): bool
     {
-        return $user->can(TopicTypeGiftPermissionEnum::LIST_QUIZ_ATTEMPT);
+        return $user->canAny([
+            TopicTypeGiftPermissionEnum::LIST_QUIZ_ATTEMPT,
+            TopicTypeGiftPermissionEnum::LIST_SELF_QUIZ_ATTEMPT,
+        ]);
     }
 }

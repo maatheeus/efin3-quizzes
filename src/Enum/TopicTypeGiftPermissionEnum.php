@@ -15,6 +15,8 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
 
     public const UPDATE_QUIZ_ATTEMPT = 'quiz-attempt_update';
 
+    public const LIST_SELF_QUIZ_ATTEMPT = 'quiz-attempt_list-self';
+
     public const READ_GIFT_QUIZ = 'gift-quiz_read';
     public const UPDATE_GIFT_QUIZ = 'gift-quiz_update';
     public const CREATE_GIFT_QUIZ_QUESTION = 'gift-quiz-question_create';
@@ -40,6 +42,7 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
             TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ_QUESTION,
             TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
             TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
+            TopicTypeGiftPermissionEnum::LIST_SELF_QUIZ_ATTEMPT,
         ];
     }
 }
