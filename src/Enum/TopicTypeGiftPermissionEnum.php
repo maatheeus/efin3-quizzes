@@ -41,7 +41,6 @@ class TopicTypeGiftPermissionEnum extends BasicEnum
             TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ,
             TopicTypeGiftPermissionEnum::UPDATE_GIFT_QUIZ_QUESTION,
             TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
-            TopicTypeGiftPermissionEnum::DELETE_GIFT_QUIZ_QUESTION,
             TopicTypeGiftPermissionEnum::LIST_SELF_QUIZ_ATTEMPT,
         ];
     }
