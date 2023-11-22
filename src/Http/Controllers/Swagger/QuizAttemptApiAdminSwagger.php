@@ -70,7 +70,7 @@ interface QuizAttemptApiAdminSwagger
      *                  @OA\Property(
      *                      property="data",
      *                      type="array",
-     *                      @OA\Items(ref="#/components/schemas/QuizAttemptSimpleResource")
+     *                      @OA\Items(@OA\Schema(ref="#/components/schemas/QuizAttemptSimpleResource"))
      *                  ),
      *                  @OA\Property(
      *                      property="message",
