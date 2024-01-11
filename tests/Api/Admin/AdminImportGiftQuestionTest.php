@@ -57,7 +57,7 @@ class AdminImportGiftQuestionTest extends TestCase
             $import->collection($data);
             $this->assertEquals([
                 '*.question' => ['required', 'string'],
-                '*.score' => ['required', 'integer', 'min:1'],
+                '*.score' => ['required', 'integer', 'min:0'],
             ], $import->rules());
 
             return true;

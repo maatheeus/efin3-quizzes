@@ -49,7 +49,7 @@ class AdminGiftQuestionRequest extends FormRequest
         return [
             'topic_gift_quiz_id' => ['required', 'integer', 'exists:topic_gift_quizzes,id'],
             'value' => ['required', 'string'],
-            'score' => ['required', 'integer', 'min:1'],
+            'score' => ['required', 'integer', 'min:0'],
             'order' => ['nullable', 'integer', 'min:1'],
             'category_id' => ['nullable', 'integer', 'exists:categories,id'],
         ];

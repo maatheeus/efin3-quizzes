@@ -39,7 +39,7 @@ class QuestionImport implements ToCollection, WithHeadingRow, WithValidation, Sk
     {
         return [
             '*.question' => ['required', 'string'],
-            '*.score' => ['required', 'integer', 'min:1'],
+            '*.score' => ['required', 'integer', 'min:0'],
         ];
     }
 }
