@@ -180,6 +180,34 @@ trait GiftQuestionTesting
                 ],
             ],
             [
+                'question' => 'What is the full simplification of the following expression, 2ab × 7ac? {~9abc~14abc~9ab²c=14ab²c}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'title' => '',
+                'questionForStudent' => 'What is the full simplification of the following expression, 2ab × 7ac?',
+                'options' => [
+                    'answers' => [
+                        '9abc',
+                        '14abc',
+                        '9ab²c',
+                        '14ab²c',
+                    ],
+                ],
+            ],
+            [
+                'question' => 'The value of x⁻² is:{~x²~-x²=1/x²~-1/x²}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'title' => '',
+                'questionForStudent' => 'The value of x⁻² is:',
+                'options' => [
+                    'answers' => [
+                        'x²',
+                        '-x²',
+                        '1/x²',
+                        '-1/x²',
+                    ],
+                ],
+            ],
+            [
                 'question' => 'When was Ulysses S. Grant born?{#1822:5}',
                 'type' => QuestionTypeEnum::NUMERICAL_QUESTION,
                 'title' => '',

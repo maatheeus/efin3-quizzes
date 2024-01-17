@@ -209,6 +209,21 @@ class AttemptAnswerSaveApiTest extends TestCase
                 'answer' => [AnswerKeyEnum::TEXT => 'nothing'],
             ],
             [
+                'question' => 'What is the full simplification of the following expression, 2ab × 7ac? {~9abc~14abc~9ab²c=14ab²c}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'answer' => [AnswerKeyEnum::TEXT => '14ab²c'],
+            ],
+            [
+                'question' => 'The value of x⁻² is\\:{~x²~-x²=1/x²~-1/x²}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'answer' => [AnswerKeyEnum::TEXT => '1/x²'],
+            ],
+            [
+                'question' => 'The value ax⁻ⁿ{=a/xⁿ~1/axⁿ~-axⁿ~axⁿ}',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'answer' => [AnswerKeyEnum::TEXT => 'a/xⁿ'],
+            ],
+            [
                 'question' => 'When was Ulysses S. Grant born?{#1822:5}',
                 'type' => QuestionTypeEnum::NUMERICAL_QUESTION,
                 'answer' => [AnswerKeyEnum::NUMERIC => 1822],
