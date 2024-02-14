@@ -3,13 +3,13 @@
     "description": "Escola Headles LMS Topic Type GIFT",
     "type": "package",
     "require": {
-        "php": "^7.4|^8.0|^8.1",
+        "php": ">=7.4",
         "escolalms/auth": "^0",
         "escolalms/categories": "^0",
         "escolalms/core": "^1",
         "escolalms/settings": "^0",
         "escolalms/topic-types": "^0",
-        "laravel/framework": "^8|^9",
+        "laravel/framework": ">=8.0",
         "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
