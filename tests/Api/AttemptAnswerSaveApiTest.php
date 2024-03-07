@@ -185,6 +185,8 @@ class AttemptAnswerSaveApiTest extends TestCase
                     'Japan' => 'Tokyo',
                     'India' => 'New Delhi',
                 ]],
+                'score' => 4,
+                'resultScore' => 4,
             ],
             [
                 'question' => 'Match the following countries with their corresponding capitals. {

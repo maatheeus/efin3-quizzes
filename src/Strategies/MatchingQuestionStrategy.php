@@ -36,7 +36,7 @@ class MatchingQuestionStrategy extends QuestionStrategy
                 return $result->setScore(0);
         }
 
-        return $result->setScore(1);
+        return $result->setScore($this->questionModel->score);
     }
 
     private function getCorrectAnswers(): Collection
