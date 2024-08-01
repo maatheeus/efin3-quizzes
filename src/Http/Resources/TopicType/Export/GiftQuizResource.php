@@ -1,14 +1,14 @@
 <?php
 
-namespace EscolaLms\TopicTypeGift\Http\Resources\TopicType\Export;
+namespace Efin3\Quizzes\Http\Resources\TopicType\Export;
 
-use EscolaLms\TopicTypeGift\Http\Resources\AdminGiftQuestionResource;
-use EscolaLms\TopicTypeGift\Models\GiftQuiz;
+use Efin3\Quizzes\Http\Resources\AdminGiftQuestionResource;
+use Efin3\Quizzes\Models\TopicQuiz;
 use EscolaLms\TopicTypes\Http\Resources\TopicType\Contacts\TopicTypeResourceContract;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin GiftQuiz
+ * @mixin TopicQuiz
  */
 class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
 {
@@ -16,12 +16,6 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
     {
         return [
             'value' => $this->value,
-            'max_attempts' => $this->max_attempts,
-            'max_execution_time' => $this->max_execution_time,
-            'min_pass_score' => $this->min_pass_score,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),
         ];
     }
 }

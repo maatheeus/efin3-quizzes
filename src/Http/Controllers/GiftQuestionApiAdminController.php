@@ -1,74 +1,101 @@
 <?php
 
-namespace EscolaLms\TopicTypeGift\Http\Controllers;
+namespace Efin3\Quizzes\Http\Controllers;
 
-use Carbon\Carbon;
-use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
-use EscolaLms\TopicTypeGift\Export\QuestionExport;
-use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\GiftQuestionApiAdminSwagger;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminCreateGiftQuestionRequest;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminDeleteGiftQuestionRequest;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminExportGiftQuestionsRequest;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminImportGiftQuestionsRequest;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminSortGiftQuestionRequest;
-use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateGiftQuestionRequest;
-use EscolaLms\TopicTypeGift\Http\Resources\AdminGiftQuestionResource;
-use EscolaLms\TopicTypeGift\Import\QuestionImport;
-use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuestionServiceContract;
 use Illuminate\Http\JsonResponse;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Efin3\Quizzes\Models\TopicQuiz;
+use Efin3\Quizzes\Models\Question;
+use Efin3\Quizzes\Models\Answer;
+use Efin3\Quizzes\Models\Alternative;
 
-class GiftQuestionApiAdminController extends EscolaLmsBaseController implements GiftQuestionApiAdminSwagger
+class GiftQuestionApiAdminController
 {
-    private GiftQuestionServiceContract $giftQuestionService;
-
-    public function __construct(GiftQuestionServiceContract $giftQuestionService)
+    /**
+     * Store a new quiz, question, and alternatives.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function store(Request $request): JsonResponse
     {
-        $this->giftQuestionService = $giftQuestionService;
+        // Validar dados recebidos
+        $validated = $request->validate([
+            'quiz' => 'required|array',
+            'quiz.value' => 'required|string',
+            'quiz.max_attempts' => 'required|integer',
+            'quiz.max_execution_time' => 'required|integer',
+            'quiz.min_pass_score' => 'required|integer',
+            'question' => 'required|array',
+            'question.text' => 'required|string',
+            'alternatives' => 'required|array',
+            'alternatives.*.text' => 'required|string',
+            'alternatives.*.is_correct' => 'required|boolean',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Criar o novo quiz
+            $topicQuiz = TopicQuiz::create();
+
+            // Criar a nova questão
+            $question = Question::create([
+                'topic_quiz_id' => $topicQuiz->id,
+                'question_text' => $validated['question']['text'],
+            ]);
+
+            // Criar alternativas para a questão
+            $alternatives = array_map(function ($alternative) use ($question) {
+                return [
+                    'question_id' => $question->id,
+                    'alternative_text' => $alternative['text'],
+                    'is_correct' => $alternative['is_correct'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $validated['alternatives']);
+
+            Alternative::insert($alternatives);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Quiz, question, and alternatives created successfully',
+                'data' => [
+                    'topic_quiz' => $topicQuiz,
+                    'question' => $question,
+                    'alternatives' => $alternatives,
+                ],
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to create quiz, question, or alternatives',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-    public function create(AdminCreateGiftQuestionRequest $request): JsonResponse
+    public function saveAnswer(Request $request): JsonResponse
     {
-        $result = $this->giftQuestionService->create($request->getGiftQuestionDto());
+        $user_id = auth()->id();
+        $request->validate([
+            'question_id' => 'required|integer',
+            'alternative_id' => 'required|integer',
+        ]);
 
-        return $this->sendResponseForResource(AdminGiftQuestionResource::make($result), __('Gift question created successfully.'));
-    }
+        try {
+            $answer = Answer::create([
+                'question_id' => $request->input('question_id'),
+                'alternative_id' => $request->input('alternative_id'),
+                'user_id' => $user_id
+            ]);
 
-    public function update(AdminUpdateGiftQuestionRequest $request): JsonResponse
-    {
-        $result = $this->giftQuestionService->update($request->getGiftQuestionDto(), $request->getId());
-
-        return $this->sendResponseForResource(AdminGiftQuestionResource::make($result), __('Gift question updated successfully.'));
-    }
-
-    public function delete(AdminDeleteGiftQuestionRequest $request): JsonResponse
-    {
-        $this->giftQuestionService->delete($request->getId());
-
-        return $this->sendSuccess(__('Gift question deleted successfully.'));
-    }
-
-    public function sort(AdminSortGiftQuestionRequest $request): JsonResponse
-    {
-        $this->giftQuestionService->sort($request->toDto());
-
-        return $this->sendSuccess(__('Gift questions sorted successfully.'));
-    }
-
-    public function export(AdminExportGiftQuestionsRequest $request): BinaryFileResponse
-    {
-        return Excel::download(
-            new QuestionExport($request->toDto()),
-            'questions.xlsx',
-            \Maatwebsite\Excel\Excel::XLSX
-        );
-    }
-
-    public function import(AdminImportGiftQuestionsRequest $request): JsonResponse
-    {
-        Excel::import(new QuestionImport($request->getQuizId()), $request->getFile());
-
-        return $this->sendSuccess(__('Gift questions imported successfully.'));
+            return response()->json(['message' => 'Answer created successfully', 'data' => $answer], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to create answer', 'error' => $e->getMessage()], 500);
+        }
     }
 }

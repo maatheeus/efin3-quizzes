@@ -1,5 +1,5 @@
 {
-    "name": "escolalms/topic-type-gift",
+    "name": "efin3/quizzes",
     "description": "Escola Headles LMS Topic Type GIFT",
     "type": "package",
     "require": {
@@ -25,16 +25,16 @@
     ],
     "autoload": {
         "psr-4": {
-            "EscolaLms\\TopicTypeGift\\": "src",
-            "EscolaLms\\TopicTypeGift\\Tests\\": "tests",
-            "EscolaLms\\TopicTypeGift\\Database\\Factories\\": "database/factories",
-            "EscolaLms\\TopicTypeGift\\Database\\Seeders\\": "database/seeders"
+            "Efin3\\Quizzes\\": "src",
+            "Efin3\\Quizzes\\Tests\\": "tests",
+            "Efin3\\Quizzes\\Database\\Factories\\": "database/factories",
+            "Efin3\\Quizzes\\Database\\Seeders\\": "database/seeders"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "EscolaLms\\TopicTypeGift\\EscolaLmsTopicTypeGiftServiceProvider"
+                "Efin3\\Quizzes\\Efin3QuizzesServiceProvider"
             ]
         }
     },

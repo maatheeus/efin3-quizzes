@@ -1,13 +1,13 @@
 <?php
 
-namespace EscolaLms\TopicTypeGift\Http\Resources\TopicType\Client;
+namespace Efin3\Quizzes\Http\Resources\TopicType\Client;
 
 use EscolaLms\Courses\Http\Resources\TopicType\Contracts\TopicTypeResourceContract;
-use EscolaLms\TopicTypeGift\Models\GiftQuiz;
+use Efin3\Quizzes\Models\TopicQuiz;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin GiftQuiz
+ * @mixin TopicQuiz
  */
 class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
 {
@@ -15,10 +15,6 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
     {
         return [
             'id' => $this->id,
-            'value' => $this->value,
-            'max_attempts' => $this->max_attempts,
-            'max_execution_time' => $this->max_execution_time,
-            'min_pass_score' => $this->min_pass_score,
         ];
     }
 }
