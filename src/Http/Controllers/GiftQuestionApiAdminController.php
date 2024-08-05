@@ -98,4 +98,25 @@ class GiftQuestionApiAdminController
             return response()->json(['message' => 'Failed to create answer', 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function get(Request $request, $id): JsonResponse
+    {
+        try {
+            $topicQuiz = TopicQuiz::with(['questions.alternatives'])->findOrFail($id);
+            $topicQuiz->questions->each(function ($question) {
+                $question->alternatives->makeHidden('is_correct');
+            });
+
+            return response()->json([
+                'message' => 'Quiz retrieved successfully',
+                'data' => $topicQuiz,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to retrieve quiz',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }

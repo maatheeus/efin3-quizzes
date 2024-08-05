@@ -9,8 +9,9 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
             Route::post('create', [GiftQuestionApiAdminController::class, 'store']);
         });
     });
-
+    
     Route::prefix('quizzes')->group(function () {
+        Route::get('{id}', [GiftQuestionApiAdminController::class, 'get']);
         Route::prefix('answer')->group(function () {
             Route::post('save', [GiftQuestionApiAdminController::class, 'saveAnswer']);
         });
