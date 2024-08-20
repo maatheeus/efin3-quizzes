@@ -22,15 +22,16 @@ class GiftQuestionApiAdminController
     {
         // Validar dados recebidos
         $validated = $request->validate([
+            'type' => 'required|string|in:multiple_choice',
             'quiz' => 'required|array',
             'quiz.value' => 'required|string',
-            'quiz.max_attempts' => 'required|integer',
-            'quiz.max_execution_time' => 'required|integer',
-            'quiz.min_pass_score' => 'required|integer',
+            'quiz.topic_quiz_id' => 'required|integer|exists:topic_quizzes,id',
             'question' => 'required|array',
             'question.text' => 'required|string',
+            'question.resolution' => 'required|string',
             'alternatives' => 'required|array',
             'alternatives.*.text' => 'required|string',
+            'alternatives.*.resolution' => 'required|string',
             'alternatives.*.is_correct' => 'required|boolean',
         ]);
 
@@ -38,12 +39,13 @@ class GiftQuestionApiAdminController
 
         try {
             // Criar o novo quiz
-            $topicQuiz = TopicQuiz::create();
+            $topicQuiz = TopicQuiz::findOrFail($validated['quiz']['topic_quiz_id']);
 
             // Criar a nova questão
             $question = Question::create([
                 'topic_quiz_id' => $topicQuiz->id,
                 'question_text' => $validated['question']['text'],
+                'resolution' => $validated['question']['resolution'],
             ]);
 
             // Criar alternativas para a questão
@@ -51,6 +53,7 @@ class GiftQuestionApiAdminController
                 return [
                     'question_id' => $question->id,
                     'alternative_text' => $alternative['text'],
+                    'resolution' => $alternative['resolution'],
                     'is_correct' => $alternative['is_correct'],
                     'created_at' => now(),
                     'updated_at' => now(),
