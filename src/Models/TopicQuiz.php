@@ -12,7 +12,10 @@ class TopicQuiz extends AbstractTopicContent
     use HasFactory;
 
     protected $fillable = [
-        'id'
+        'id',
+        'max_attempts',
+        'max_execution_time',
+        'min_pass_score'
     ];
 
     /**
