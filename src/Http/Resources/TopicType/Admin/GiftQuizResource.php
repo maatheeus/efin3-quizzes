@@ -19,6 +19,10 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'max_attempts' => $request->input('max_attempts'),
             'max_execution_time' => $request->input('max_execution_time'),
             'min_pass_score' => $request->input('min_pass_score'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'value'     => $request->input('value'),
+            'questions' => []
         ];
     }
 }
