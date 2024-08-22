@@ -20,7 +20,22 @@ class TopicQuiz extends AbstractTopicContent
         'min_pass_score'
     ];
 
-    protected $guarded = [];
+    protected $casts = [
+        'id' => 'integer',
+        'max_attempts' => 'integer',
+        'max_execution_time' => 'integer',
+        'min_pass_score' => 'double',
+    ];
+
+    public static function rules(): array
+    {
+        return [
+            'max_attempts' => ['nullable', 'integer', 'min:1'],
+            'max_execution_time' => ['nullable', 'integer', 'min:1'],
+            'min_pass_score' => ['nullable', 'numeric', 'min:0'],
+        ];
+    }
+
 
     /**
      * Get the questions for the quiz.
