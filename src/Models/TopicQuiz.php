@@ -11,12 +11,16 @@ class TopicQuiz extends AbstractTopicContent
 {
     use HasFactory;
 
+    public $cacheFor = null;
+
     protected $fillable = [
         'id',
         'max_attempts',
         'max_execution_time',
         'min_pass_score'
     ];
+
+    protected $guarded = [];
 
     /**
      * Get the questions for the quiz.
