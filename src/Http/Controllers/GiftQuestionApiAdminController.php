@@ -84,21 +84,51 @@ class GiftQuestionApiAdminController
     public function saveAnswer(Request $request): JsonResponse
     {
         $user_id = auth()->id();
+
+        // Validação para múltiplas respostas
         $request->validate([
-            'question_id' => 'required|integer',
-            'alternative_id' => 'required|integer',
+            'answers' => 'required|array',
+            'answers.*.question_id' => 'required|integer',
+            'answers.*.alternative_id' => 'required|integer',
         ]);
 
-        try {
-            $answer = Answer::create([
-                'question_id' => $request->input('question_id'),
-                'alternative_id' => $request->input('alternative_id'),
-                'user_id' => $user_id
-            ]);
+        $responses = [];
 
-            return response()->json(['message' => 'Answer created successfully', 'data' => $answer], 201);
+        try {
+            foreach ($request->input('answers') as $answerData) {
+                $question_id = $answerData['question_id'];
+                $alternative_id = $answerData['alternative_id'];
+
+                $checkalternative = Alternative::where('id', $alternative_id)->where('question_id', $question_id)->first();
+                $checkquestion = Question::find($question_id)
+                    ->alternatives()
+                    ->where('is_correct', true)
+                    ->first();
+
+                // Criando a resposta
+                $answer = Answer::create([
+                    'question_id' => $question_id,
+                    'alternative_id' => $alternative_id,
+                    'user_id' => $user_id,
+                ]);
+
+                // Armazenando os dados da resposta para retorno
+                $responses[] = [
+                    'question_id' => $question_id,
+                    'is_correct_marked' => $checkalternative->is_correct,
+                    'alternative_correct' => $checkquestion,
+                ];
+            }
+
+            return response()->json([
+                'message' => 'Answers created successfully',
+                'data' => $responses,
+            ], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to create answer', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => 'Failed to create answers',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -108,6 +138,8 @@ class GiftQuestionApiAdminController
             $topicQuiz = TopicQuiz::with(['questions.alternatives'])->findOrFail($id);
             $topicQuiz->questions->each(function ($question) {
                 $question->alternatives->makeHidden('is_correct');
+                $question->alternatives->makeHidden('resolution');
+                $question->makeHidden('resolution');
             });
 
             return response()->json([
