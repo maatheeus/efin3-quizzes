@@ -38,17 +38,16 @@ class GiftQuestionApiAdminController
         DB::beginTransaction();
 
         try {
-            // Criar o novo quiz
             $topicQuiz = TopicQuiz::findOrFail($validated['quiz']['topic_quiz_id']);
 
-            // Criar a nova questão
+
             $question = Question::create([
                 'topic_quiz_id' => $topicQuiz->id,
                 'question_text' => $validated['question']['text'],
                 'resolution' => $validated['question']['resolution'],
             ]);
 
-            // Criar alternativas para a questão
+
             $alternatives = array_map(function ($alternative) use ($question) {
                 return [
                     'question_id' => $question->id,
@@ -85,7 +84,6 @@ class GiftQuestionApiAdminController
     {
         $user_id = auth()->id();
 
-        // Validação para múltiplas respostas
         $request->validate([
             'answers' => 'required|array',
             'answers.*.question_id' => 'required|integer',
@@ -105,14 +103,13 @@ class GiftQuestionApiAdminController
                     ->where('is_correct', true)
                     ->first();
 
-                // Criando a resposta
+            
                 $answer = Answer::create([
                     'question_id' => $question_id,
                     'alternative_id' => $alternative_id,
                     'user_id' => $user_id,
                 ]);
 
-                // Armazenando os dados da resposta para retorno
                 $responses[] = [
                     'question_id' => $question_id,
                     'is_correct_marked' => $checkalternative->is_correct,

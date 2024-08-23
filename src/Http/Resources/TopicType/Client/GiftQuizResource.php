@@ -18,7 +18,19 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'max_attempts' => $this->max_attempts,
             'max_execution_time' => $this->max_execution_time,
             'min_pass_score' => $this->min_pass_score,
-            'teste' => 123
+            'questions' => $this->questions->map(function($question) {
+                $question->alternatives->makeHidden('is_correct');
+                $question->alternatives->makeHidden('resolution');
+                $question->makeHidden('resolution');
+                
+                return [
+                    'id' => $question->id,
+                    'question_text' => $question->question_text,
+                    'created_at' => $question->created_at,
+                    'updated_at' => $question->updated_at,
+                    'alternatives' => $question->alternatives
+                ];
+            })
         ];
     }
 }
