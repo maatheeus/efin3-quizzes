@@ -19,7 +19,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'max_attempts' => $this->max_attempts,
             'max_execution_time' => $this->max_execution_time,
             'min_pass_score' => $this->min_pass_score,
-            'questions' => $this->questions->map(function($question) {
+            'questions' => $this->questions->map(function($question) use ($request) {
                 $checkUserResponse = Answer::where('question_id', $question->id)->where('user_id', $request->user()->id)->first();
 
                 if(!$checkUserResponse)
