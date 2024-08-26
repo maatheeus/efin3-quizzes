@@ -80,6 +80,70 @@ class GiftQuestionApiAdminController
         }
     }
 
+    public function update(Request $request, $id): JsonResponse
+    {
+        // Validar dados recebidos
+        $validated = $request->validate([
+            'type' => 'required|string|in:multiple_choice',
+            'quiz' => 'required|array',
+            'quiz.value' => 'required|string',
+            'question' => 'required|array',
+            'question.text' => 'required|string',
+            'question.resolution' => 'required|string',
+            'alternatives' => 'required|array',
+            'alternatives.*.text' => 'required|string',
+            'alternatives.*.resolution' => 'required|string',
+            'alternatives.*.is_correct' => 'required|boolean',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Encontrar a questão a ser atualizada pelo ID da questão
+            $question = Question::where('id', $id)->firstOrFail();
+
+            // Atualizar a questão com os novos dados
+            $question->update([
+                'question_text' => $validated['question']['text'],
+                'resolution' => $validated['question']['resolution'],
+            ]);
+
+            // Apagar alternativas antigas associadas à questão
+            Alternative::where('question_id', $question->id)->delete();
+
+            // Inserir novas alternativas
+            $alternatives = array_map(function ($alternative) use ($question) {
+                return [
+                    'question_id' => $question->id,
+                    'alternative_text' => $alternative['text'],
+                    'resolution' => $alternative['resolution'],
+                    'is_correct' => $alternative['is_correct'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }, $validated['alternatives']);
+
+            Alternative::insert($alternatives);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Quiz, question, and alternatives updated successfully',
+                'data' => [
+                    'question' => $question,
+                    'alternatives' => $alternatives,
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to update quiz, question, or alternatives',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
     public function saveAnswer(Request $request): JsonResponse
     {
         $user_id = auth()->id();
@@ -150,5 +214,34 @@ class GiftQuestionApiAdminController
             ], 500);
         }
     }
+
+    public function destroy($id): JsonResponse
+    {
+        DB::beginTransaction();
+
+        try {
+            // Encontrar a questão a ser removida pelo ID
+            $question = Question::findOrFail($id);
+
+            // Remover alternativas associadas à questão
+            Alternative::where('question_id', $question->id)->delete();
+
+            // Remover a questão
+            $question->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Question and its alternatives removed successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to remove question and alternatives',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 }

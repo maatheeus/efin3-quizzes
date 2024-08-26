@@ -7,6 +7,8 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::prefix('quizzes')->group(function () {
             Route::post('create', [GiftQuestionApiAdminController::class, 'store']);
+            Route::put('{id}', [GiftQuestionApiAdminController::class, 'update']);
+            Route::delete('{id}', [GiftQuestionApiAdminController::class, 'destroy']);
         });
     });
     
