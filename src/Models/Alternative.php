@@ -14,6 +14,7 @@ class Alternative extends Model
         'question_id',
         'alternative_text',
         'is_correct',
+        'resolution',
     ];
 
     /**

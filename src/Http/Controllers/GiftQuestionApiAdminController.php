@@ -24,7 +24,6 @@ class GiftQuestionApiAdminController
         $validated = $request->validate([
             'type' => 'required|string|in:multiple_choice',
             'quiz' => 'required|array',
-            'quiz.value' => 'required|string',
             'quiz.topic_quiz_id' => 'required|integer|exists:topic_quizzes,id',
             'question' => 'required|array',
             'question.text' => 'required|string',
@@ -86,7 +85,6 @@ class GiftQuestionApiAdminController
         $validated = $request->validate([
             'type' => 'required|string|in:multiple_choice',
             'quiz' => 'required|array',
-            'quiz.value' => 'required|string',
             'question' => 'required|array',
             'question.text' => 'required|string',
             'question.resolution' => 'required|string',
