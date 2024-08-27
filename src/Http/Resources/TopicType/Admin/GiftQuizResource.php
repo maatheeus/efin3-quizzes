@@ -27,6 +27,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
                     'id' => $question->id,
                     'type' => 'multiple_choice',
                     'question_text' => $question->question_text,
+                    'resolution' => $question->resolution,
                     'created_at' => $question->created_at,
                     'updated_at' => $question->updated_at,
                     'alternatives' => $question->alternatives
