@@ -84,7 +84,6 @@ class GiftQuestionApiAdminController
         // Validar dados recebidos
         $validated = $request->validate([
             'type' => 'required|string|in:multiple_choice',
-            'quiz' => 'required|array',
             'question' => 'required|array',
             'question.text' => 'required|string',
             'question.resolution' => 'required|string',
