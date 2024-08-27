@@ -159,7 +159,8 @@ class GiftQuestionApiAdminController
                 $alternative_id = $answerData['alternative_id'];
 
                 $checkalternative = Alternative::where('id', $alternative_id)->where('question_id', $question_id)->first();
-                $checkquestion = Question::find($question_id)
+                $question = Question::find($question_id)->first();
+                $checkquestion = $question
                     ->alternatives()
                     ->where('is_correct', true)
                     ->first();
@@ -173,6 +174,7 @@ class GiftQuestionApiAdminController
 
                 $responses[] = [
                     'question_id' => $question_id,
+                    'resolution' => $question->resolution,
                     'is_correct_marked' => $checkalternative->is_correct,
                     'alternative_correct' => $checkquestion,
                 ];
