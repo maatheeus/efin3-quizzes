@@ -159,7 +159,7 @@ class GiftQuestionApiAdminController
                 $alternative_id = $answerData['alternative_id'];
 
                 $checkalternative = Alternative::where('id', $alternative_id)->where('question_id', $question_id)->first();
-                $question = Question::find($question_id)->first();
+                $question = Question::find($question_id);
                 $checkquestion = $question
                     ->alternatives()
                     ->where('is_correct', true)
