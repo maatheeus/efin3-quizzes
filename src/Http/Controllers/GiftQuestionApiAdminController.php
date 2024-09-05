@@ -9,6 +9,8 @@ use Efin3\Quizzes\Models\TopicQuiz;
 use Efin3\Quizzes\Models\Question;
 use Efin3\Quizzes\Models\Answer;
 use Efin3\Quizzes\Models\Alternative;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class GiftQuestionApiAdminController
 {
@@ -240,6 +242,32 @@ class GiftQuestionApiAdminController
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function storeGame(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'file' => 'required|file|mimes:zip,rar|max:20480'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+       
+        $name = $request->input('name');
+        $file = $request->file('file');
+
+        
+        $path = $file->storeAs('games', $file->getClientOriginalName());
+
+      
+        return response()->json([
+            'message' => 'Game uploaded successfully!',
+            'name' => $name,
+            'file_path' => $path
+        ], 201);
     }
 
 

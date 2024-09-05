@@ -4,6 +4,8 @@ use Efin3\Quizzes\Http\Controllers\GiftQuestionApiAdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->middleware(['auth:api'])->group(function () {
+    Route::post('game', [GiftQuestionApiAdminController::class, 'storeGame']);
+
     Route::prefix('admin')->group(function () {
         Route::prefix('quizzes')->group(function () {
             Route::post('create', [GiftQuestionApiAdminController::class, 'store']);
