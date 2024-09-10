@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('api')->middleware(['auth:api'])->group(function () {
     Route::post('game', [GiftQuestionApiAdminController::class, 'storeGame']);
+    Route::get('game', [GiftQuestionApiAdminController::class, 'getGame']);
 
     Route::prefix('admin')->group(function () {
         Route::prefix('quizzes')->group(function () {

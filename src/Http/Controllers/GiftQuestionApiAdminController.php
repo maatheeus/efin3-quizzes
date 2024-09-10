@@ -270,5 +270,56 @@ class GiftQuestionApiAdminController
         ], 201);
     }
 
+    public function getGame(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Game list fetched successfully',
+            'data' => [
+                'current_page' => 1,
+                'data' => [
+                    [
+                        'id' => 2,
+                        'name' => 'flappy',
+                        'path' => '/path/game/flappy/index.html'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'tester',
+                        'path' => '/path/game/teste/index.html'
+                    ]
+                ],
+                'first_page_url' => 'http://api.efin3.com/api/admin/game?page=1',
+                'from' => 1,
+                'last_page' => 1,
+                'last_page_url' => 'http://api.efin3.com/api/admin/game?page=1',
+                'links' => [
+                    [
+                        'url' => null,
+                        'label' => '&laquo; Previous',
+                        'active' => false
+                    ],
+                    [
+                        'url' => 'http://api.efin3.com/api/admin/game?page=1',
+                        'label' => '1',
+                        'active' => true
+                    ],
+                    [
+                        'url' => null,
+                        'label' => 'Next &raquo;',
+                        'active' => false
+                    ]
+                ],
+                'next_page_url' => null,
+                'path' => 'http://api.efin3.com/api/admin/game',
+                'per_page' => 20,
+                'prev_page_url' => null,
+                'to' => 2,
+                'total' => 2
+            ]
+        ], 200);
+    }
+
+
 
 }
