@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Efin3\Quizzes\Models\TopicQuiz;
 use Efin3\Quizzes\Models\Question;
 use Efin3\Quizzes\Models\Answer;
+use Efin3\Quizzes\Models\Game;
 use Efin3\Quizzes\Models\Alternative;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -247,8 +248,7 @@ class GiftQuestionApiAdminController
     public function storeGame(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'file' => 'required|file|mimes:zip,rar|max:20480'
+            'name' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -262,64 +262,111 @@ class GiftQuestionApiAdminController
         
         $path = $file->storeAs('games', $file->getClientOriginalName());
 
+
+        $game = Game::create([
+            'name' => $name,
+            'file' => $path,
+        ]);
+
       
         return response()->json([
             'message' => 'Game uploaded successfully!',
             'name' => $name,
-            'file_path' => $path
+            'file' => $path
         ], 201);
     }
 
     public function getGame(Request $request)
     {
+        $games = Game::paginate(20);
+
         return response()->json([
             'success' => true,
             'message' => 'Game list fetched successfully',
             'data' => [
-                'current_page' => 1,
-                'data' => [
-                    [
-                        'id' => 2,
-                        'name' => 'flappy',
-                        'path' => '/path/game/flappy/index.html'
-                    ],
-                    [
-                        'id' => 3,
-                        'name' => 'tester',
-                        'path' => '/path/game/teste/index.html'
-                    ]
-                ],
-                'first_page_url' => 'http://api.efin3.com/api/admin/game?page=1',
-                'from' => 1,
-                'last_page' => 1,
-                'last_page_url' => 'http://api.efin3.com/api/admin/game?page=1',
-                'links' => [
-                    [
-                        'url' => null,
-                        'label' => '&laquo; Previous',
-                        'active' => false
-                    ],
-                    [
-                        'url' => 'http://api.efin3.com/api/admin/game?page=1',
-                        'label' => '1',
-                        'active' => true
-                    ],
-                    [
-                        'url' => null,
-                        'label' => 'Next &raquo;',
-                        'active' => false
-                    ]
-                ],
-                'next_page_url' => null,
-                'path' => 'http://api.efin3.com/api/admin/game',
-                'per_page' => 20,
-                'prev_page_url' => null,
-                'to' => 2,
-                'total' => 2
+                'current_page' => $games->currentPage(),
+                'data' => $games->items(),
+                'first_page_url' => $games->url(1),
+                'from' => $games->firstItem(),
+                'last_page' => $games->lastPage(),
+                'last_page_url' => $games->url($games->lastPage()),
+                'links' => $games->linkCollection(),
+                'next_page_url' => $games->nextPageUrl(),
+                'path' => $games->path(),
+                'per_page' => $games->perPage(),
+                'prev_page_url' => $games->previousPageUrl(),
+                'to' => $games->lastItem(),
+                'total' => $games->total(),
             ]
         ], 200);
     }
 
+    public function getGameById(Request $request, $id)
+    {
+        $game = Game::find($id);
+        
+        return [
+            'data' => $game
+        ];
+    }
 
+    public function updateGame(Request $request, $id)
+    {
+        // Validação dos campos
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'file' => 'nullable|file|mimes:zip,html'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        // Buscar o jogo pelo ID
+        $game = Game::find($id);
+
+        if (!$game) {
+            return response()->json(['message' => 'Game not found'], 404);
+        }
+
+        // Atualizar nome, se presente
+        $game->name = $request->input('name');
+
+        // Se um novo arquivo for enviado, substituí-lo
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->storeAs('games', $file->getClientOriginalName());
+            $game->file = $path;
+        }
+
+        // Salvar as mudanças no banco de dados
+        $game->save();
+
+        // Retornar a resposta de sucesso
+        return response()->json([
+            'message' => 'Game updated successfully!',
+            'name' => $game->name,
+            'file' => $game->file
+        ], 200);
+    }
+
+
+    public function destroyGame($id)
+    {
+        // Buscar o jogo pelo ID
+        $game = Game::find($id);
+
+        if (!$game) {
+            return response()->json(['message' => 'Game not found'], 404);
+        }
+
+        // Excluir o jogo
+        $game->delete();
+
+        // Retornar a resposta de sucesso
+        return response()->json([
+            'message' => 'Game deleted successfully!'
+        ], 200);
+    }
 
 }
