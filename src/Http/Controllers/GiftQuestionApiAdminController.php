@@ -367,7 +367,9 @@ class GiftQuestionApiAdminController
     public function getGameById(Request $request, $id)
     {
         $game = Game::find($id);
-        
+        $game->file = Storage::url($game->file);
+        $game->preview = Storage::url('games/' . $game->id . "/" . "index.html");
+    
         return [
             'data' => $game
         ];
