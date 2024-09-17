@@ -12,6 +12,7 @@ use Efin3\Quizzes\Models\Game;
 use Efin3\Quizzes\Models\Alternative;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use ZipArchive;
 
 class GiftQuestionApiAdminController
 {
@@ -247,38 +248,100 @@ class GiftQuestionApiAdminController
 
     public function storeGame(Request $request)
     {
+        // Validação do nome e do arquivo
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'file' => 'required|file|mimes:zip' // Garantir que o arquivo é um ZIP
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
-       
+    
         $name = $request->input('name');
         $file = $request->file('file');
+    
+        // Armazenar o arquivo ZIP temporariamente
+        $zipPath = $file->storeAs('games', $file->getClientOriginalName());
+    
+        // Caminho completo do arquivo ZIP
+        $fullPath = Storage::path($zipPath);
+    
+        // Criar uma instância de ZipArchive
+        $zip = new ZipArchive;
+    
+        if ($zip->open($fullPath) === TRUE) {
+            $indexFound = false;
+            $allInRoot = true;
+    
+            // Iterar pelos arquivos no ZIP
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+    
+                // Verificar se existe um arquivo "index.html" na raiz
+                if ($filename === 'index.html') {
+                    $indexFound = true;
+                }
+    
+                // Verificar se o arquivo está na raiz (sem subpastas)
+                if (isset($fileinfo['dirname']) && $fileinfo['dirname'] !== '.') {
+                    $allInRoot = false;
+                }
+            }
+    
+            // Fechar o ZIP após a validação
+            $zip->close();
+    
+            // Validações
+            if (!$indexFound) {
+                return response()->json(['error' => 'O pacote não contém o arquivo index.html na raiz.'], 422);
+            }
+        
+        } else {
+            return response()->json(['error' => 'Falha ao abrir o arquivo ZIP.'], 500);
+        }
 
         
-        $path = $file->storeAs('games', $file->getClientOriginalName());
-
-
         $game = Game::create([
             'name' => $name,
-            'file' => $path,
+            'file' => $zipPath,
         ]);
+        
+        
+        $extractToPath = Storage::path('games/' . $game->id);
+    
 
-      
+        if (!Storage::exists('games/' . $game->id)) {
+            Storage::makeDirectory('games/' . $game->id);
+        }
+    
+
+        $zip->open($fullPath);
+        $zip->extractTo($extractToPath);
+        $zip->close();
+    
+
+        #Storage::delete($zipPath);
+    
         return response()->json([
-            'message' => 'Game uploaded successfully!',
+            'message' => 'Game uploaded and extracted successfully!',
             'name' => $name,
-            'file' => $path
+            'file' => Storage::url($zipPath),
+            'preview' => Storage::url('games/' . $game->id . "/" . "index.html")
         ], 201);
     }
 
     public function getGame(Request $request)
     {
         $games = Game::paginate(20);
+
+
+        foreach($games as $game)
+        {
+            $game->file = Storage::url($game->file);
+            $game->preview = Storage::url('games/' . $game->id . "/" . "index.html");
+        }
 
         return response()->json([
             'success' => true,
