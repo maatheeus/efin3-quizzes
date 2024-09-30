@@ -8,8 +8,13 @@ use EscolaLms\Courses\Facades\Topic;
 use Efin3\Quizzes\Http\Resources\TopicType\Admin\GiftQuizResource as AdminGiftQuizResource;
 use Efin3\Quizzes\Http\Resources\TopicType\Client\GiftQuizResource as ClientGiftQuizResource;
 use Efin3\Quizzes\Http\Resources\TopicType\Export\GiftQuizResource as ExportGiftQuizResource;
+
+use Efin3\Quizzes\Http\Resources\TopicType\Admin\GameResource as AdminGameResource;
+use Efin3\Quizzes\Http\Resources\TopicType\Client\GameResource as ClientGameResource;
+use Efin3\Quizzes\Http\Resources\TopicType\Export\GameResource as ExportGameResource;
 #use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use Efin3\Quizzes\Models\TopicQuiz;
+use Efin3\Quizzes\Models\TopicGame;
 #use EscolaLms\TopicTypeGift\Providers\AuthServiceProvider;
 #use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 #use EscolaLms\TopicTypeGift\Repositories\AttemptAnswerRepository;
@@ -62,6 +67,13 @@ class Efin3QuizzesServiceProvider extends ServiceProvider
             'client' => ClientGiftQuizResource::class,
             'admin' => AdminGiftQuizResource::class,
             'export' => ExportGiftQuizResource::class,
+        ]);
+
+        Topic::registerContentClass(TopicGame::class);
+        Topic::registerResourceClasses(TopicGame::class, [
+            'client' => ClientGameResource::class,
+            'admin' => AdminGameResource::class,
+            'export' => ExportGameResource::class,
         ]);
     }
 
