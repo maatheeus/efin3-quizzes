@@ -7,6 +7,7 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
     Route::post('game', [GiftQuestionApiAdminController::class, 'storeGame']);
     Route::get('game', [GiftQuestionApiAdminController::class, 'getGame']);
     Route::get('game/{id}/', [GiftQuestionApiAdminController::class, 'getGameById']);
+    Route::post('game/{id}/', [GiftQuestionApiAdminController::class, 'saveDataGame']);
     Route::put('game/{id}/', [GiftQuestionApiAdminController::class, 'updateGame']);
     Route::delete('game/{id}/', [GiftQuestionApiAdminController::class, 'destroyGame']);
 

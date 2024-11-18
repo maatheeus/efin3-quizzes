@@ -13,6 +13,7 @@ use Efin3\Quizzes\Models\Alternative;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use ZipArchive;
+use MongoDB\Client as MongoClient;
 
 class GiftQuestionApiAdminController
 {
@@ -434,4 +435,17 @@ class GiftQuestionApiAdminController
         ], 200);
     }
 
+    public function saveDataGame(Request $request)
+    {
+        $client = new MongoClient(env("MONGODB_URI"));
+        $collection = $client->selectDatabase('efin3')->selectCollection('games');
+    
+        $insertResult = $collection->insertOne($request->all());
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Dados salvos com sucesso!',
+            'inserted_id' => (string) $insertResult->getInsertedId(),
+        ], 201);
+    }
 }
