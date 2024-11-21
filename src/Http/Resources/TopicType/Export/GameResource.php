@@ -16,6 +16,7 @@ class GameResource extends JsonResource implements TopicTypeResourceContract
     {
         return [
             'id' => $this->id,
+            'game_id' => $this->game_id
         ];
     }
 }

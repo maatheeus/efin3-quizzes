@@ -15,17 +15,20 @@ class TopicGame extends AbstractTopicContent
 
     protected $fillable = [
         'id',
-    ];
-
-    protected $casts = [
-        'id' => 'integer'
+        'game_id'
     ];
 
     public static function rules(): array
     {
-        return [];
+        return [
+            'game_id' => ['integer'],
+        ];
     }
 
+    protected $casts = [
+        'id' => 'integer',
+        'game_id' => 'integer',
+    ];
 
     public function getMorphClass()
     {
