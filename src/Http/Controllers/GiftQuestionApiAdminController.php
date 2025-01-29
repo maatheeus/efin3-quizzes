@@ -448,4 +448,27 @@ class GiftQuestionApiAdminController
             'inserted_id' => (string) $insertResult->getInsertedId(),
         ], 201);
     }
+
+
+    public function uploadFile(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|file|max:10240',
+            ]);
+    
+            $fileName = uniqid() . '.' . $request->file('file')->getClientOriginalExtension();
+    
+            $path = $request->file('file')->storeAs('uploads', $fileName, 'public');
+    
+            return response()->json(['url' => asset('storage/' . $path)]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 400);
+        }
+    }
+    
 }
