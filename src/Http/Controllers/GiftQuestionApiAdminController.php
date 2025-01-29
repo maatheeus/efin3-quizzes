@@ -454,12 +454,12 @@ class GiftQuestionApiAdminController
     {
         try {
             $request->validate([
-                'file' => 'required|file|max:10240',
+                'upload' => 'required|file|max:10240',
             ]);
     
-            $fileName = uniqid() . '.' . $request->file('file')->getClientOriginalExtension();
+            $fileName = uniqid() . '.' . $request->file('upload')->getClientOriginalExtension();
     
-            $path = $request->file('file')->storeAs('uploads', $fileName, 'public');
+            $path = $request->file('upload')->storeAs('uploads', $fileName, 'public');
     
             return response()->json(['url' => asset('storage/' . $path)]);
         } catch (\Exception $e) {
